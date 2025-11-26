@@ -6,7 +6,7 @@
     {% for product in products %}
     
     <div class="products">
-        <img src="" alt="Imagen de {{product.name}}">
+        <img src="{{product.image.url}}" alt="Imagen de {{product.name}}">
     
         <h2>{{product.name}}</h2>
         <p>{{product.description}}</p>

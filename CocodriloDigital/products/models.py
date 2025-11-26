@@ -15,6 +15,8 @@ class Product(models.Model):
 
     # Categoría opcional (ejemplo: electrónica, ropa, etc.)
     category = models.CharField(max_length=100, blank=True, null=True)
-
+    
+    image = models.ImageField(upload_to="products/", blank=True, null=True)
+    
     def __str__(self):
         return self.name
