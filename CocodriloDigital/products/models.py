@@ -1,4 +1,5 @@
 from django.db import models
+from category.models import Category
 
 class Product(models.Model):
     # Nombre del producto
@@ -12,11 +13,13 @@ class Product(models.Model):
 
     # Stock disponible
     stock = models.PositiveIntegerField(default=0)
-
-    # Categoría opcional (ejemplo: electrónica, ropa, etc.)
-    category = models.CharField(max_length=100, blank=True, null=True)
     
+    #Imagen
     image = models.ImageField(upload_to="products/", blank=True, null=True)
+    
+    #Categoria del producto
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    
     
     def __str__(self):
         return self.name
