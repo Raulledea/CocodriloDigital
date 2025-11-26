@@ -3,4 +3,16 @@
 
 {% block content %}
 
+    {% for product in products %}
+    
+    <div class="products">
+        <img src="" alt="Imagen de {{product.name}}">
+    
+        <h2>{{product.name}}</h2>
+        <p>{{product.description}}</p>
+        <p>{{product.price}}</p>
+    </div>
+    
+    {% endfor %}
+
 {% endblock content %}
