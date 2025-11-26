@@ -42,7 +42,7 @@ dist/
 
 # Archivos estáticos y media (si se generan en local)
 # staticfiles/
-# media/
+media/
 
 # Archivos de Docker
 *.pid
