@@ -1,6 +1,12 @@
 from django.contrib import admin
-from .models import Product
-# Register your models here.
+from .models import Product, Promotion
+
+class PromotionInline(admin.TabularInline):
+    model = Promotion
+    extra = 1
 
 
-admin.site.register(Product)
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [PromotionInline]
+
