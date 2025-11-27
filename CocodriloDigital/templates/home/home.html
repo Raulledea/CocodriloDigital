@@ -3,23 +3,24 @@
 
 {% block content %}
 
-    {% for product in products %}
-    
-    <div class="products">
-
-        {% if product.image and product.image.url %}
-            <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}">
-        {% else %}
-            <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen de {{ product.name }}">
-        {% endif %}
-
+    {% for discounted_product in discounted_products %}
         
-    
-        <h2>{{product.name}}</h2>
-        <p>{{product.description}}</p>
-        <p>{{product.price}}</p>
-    </div>
-    
+        <div class="discounted_product">
+
+            {% if discounted_product.image and discounted_product.image.url %}
+                <img src="{{ discounted_product.image.url }}" alt="Imagen de {{ discounted_product.name }}">
+            {% else %}
+                <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen de {{ discounted_product.name }}">
+            {% endif %}
+
+            
+        
+            <h2>{{discounted_product.name}}</h2>
+            <p>{{discounted_product.description}}</p>
+            <p>{{discounted_product.price}}</p>
+            <p>{{discounted_product.final_price}}</p>
+        </div>
+        
     {% endfor %}
 
 {% endblock content %}
