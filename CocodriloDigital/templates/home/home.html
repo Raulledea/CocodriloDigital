@@ -1,12 +1,19 @@
 {% extends "base/base.html" %}
-
+{% load static %}
 
 {% block content %}
 
     {% for product in products %}
     
     <div class="products">
-        <img src="{{product.image.url}}" alt="Imagen de {{product.name}}">
+
+        {% if product.image and product.image.url %}
+            <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}">
+        {% else %}
+            <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen de {{ product.name }}">
+        {% endif %}
+
+        
     
         <h2>{{product.name}}</h2>
         <p>{{product.description}}</p>
