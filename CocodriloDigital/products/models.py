@@ -15,7 +15,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0)
     
     #Imagen
-    image = models.ImageField(upload_to="products/", blank=True, null=True)
+    image = models.ImageField(upload_to="products/", blank=True, null=True,default='products/default/default01.jpg')
     
     #Categoria del producto
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
