@@ -13,10 +13,7 @@ def home(request):
         promotions__discount_percent__isnull=False,
         promotions__start_date__lte=now,
         promotions__end_date__gte=now
-        )
-    
-    
-    products = Product.objects.all()
+        ).distinct()
     
     dit= {'discounted_products':discounted_products}
     
