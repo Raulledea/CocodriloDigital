@@ -1,47 +1,201 @@
 {% extends "base/base.html" %}
-{% load static %}
-
-
-{% block head_extra %}
-    <link rel="stylesheet" href="{% static 'style/home/style.css' %}">
-{% endblock head_extra %}
-
-
+{% block title %}Home - Cocodrilo Digital{% endblock %}
 
 {% block content %}
+<div class="product-row">
+    <!--Ofertas-->
+    <div class="container my-5">
+    <div class="special-offer-card p-4 text-white rounded-4 d-flex flex-column flex-md-row align-items-center justify-content-between">
 
-    <div class="products-grid">
-        {% for product in discounted_products %}
-            <article class="product-card">
-                <div class="img-center">
-                    {% if product.image and product.image.url %}
-                        <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="product-image">
-                    {% else %}
-                        <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen de {{ product.name }}" class="product-image">
-                    {% endif %}
-                </div>
+        <!-- Texto -->
+        <div class="offer-text mb-3 mb-md-0">
+            <h2 class="fw-bold mb-2">Ofertas Especiales</h2>
+            <p class="mb-0" style="font-size: 1.1rem;">
+                Aprovecha descuentos únicos por tiempo limitado. ¡Los mejores precios del mes aquí!
+            </p>
+        </div>
 
-                {% if product.final_price < product.price %}
-                    <div class="discount-badge">Oferta</div>
-                {% endif %}
+        <!--<div class="offer-img">
+            <img 
+                src="/static/img/ofertas/percheroropa.png" 
+                alt="Ofertas Especiales" 
+                class="img-fluid rounded-3"
+                style="max-height: 150px; object-fit: cover;">
+        </div>-->
 
-                <div class="product-card-body">
-                    <h3 class="product-name">{{ product.name }}</h3>
-                    <p class="product-desc">{{ product.description|default:""|truncatechars:100 }}</p>
-                    <div class="price-row">
-                        {% if product.final_price < product.price %}
-                            <span class="original-price">${{ product.price }}</span>
-                            <span class="discounted-price">${{ product.final_price }}</span>
-                        {% else %}
-                            <span class="discounted-price">${{ product.price }}</span>
-                        {% endif %}
-                    </div>
-                </div>
+    </div>
+</div>
 
-            </article>
-        {% empty %}
-            <p>No hay productos con descuento en este momento.</p>
-        {% endfor %}
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-img-top text-center py-3 bg-light">
+                <img src="/static/img/productos/iphone14.png" 
+                    alt="iPhone 14" 
+                    class="img-fluid" 
+                    style="max-height: 200px; object-fit: contain;">
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title">iPhone 14</h5>
+                <p class="price text-primary">$999.99</p>
+                <p class="offer text-primary">Oferta: 25%OFF</p>
+                <button class="btn btn-primary btn-sm">Comprar</button>
+            </div>
+        </div>
     </div>
 
-{% endblock content %}
+<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+    <div class="card product-card h-100">
+        <div class="card-img-top text-center py-3 bg-light">
+            <img src="/static/img/productos/tenisdeportivos.jpg" 
+                 alt="Tenis Deportivos Running" 
+                 class="img-fluid" 
+                 style="max-height: 200px; object-fit: contain;">
+        </div>
+        <div class="card-body text-center">
+            <h5 class="card-title">Tenis Deportivos</h5>
+            <p class="price text-primary">$79.99</p>
+            <p class="offer text-primary">Oferta: 50%OFF</p>
+            <button class="btn btn-primary btn-sm">Comprar</button>
+        </div>
+    </div>
+</div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-img-top text-center py-3 bg-light">
+                <img src="/static/img/productos/LaptopHPPavilion.jpg" 
+                     alt="Laptop HP Pavilion" 
+                     class="img-fluid" 
+                     style="max-height: 200px; object-fit: contain;">
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title">Laptop HP</h5>
+                <p class="price text-primary">$849.99</p>
+                <p class="offer text-primary">Oferta: 80%OFF</p>
+                <button class="btn btn-primary btn-sm">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+    <div class="card product-card h-100">
+        <div class="card-img-top text-center py-3 bg-light">
+            <img src="/static/img/productos/camisetabasica.jpg" 
+                 alt="Camiseta Básica Algodón" 
+                 class="img-fluid" 
+                 style="max-height: 200px; object-fit: contain;">
+        </div>
+        <div class="card-body text-center">
+            <h5 class="card-title">Camiseta Básica</h5>
+            <p class="price text-primary">$19.99</p>
+            <p class="offer text-primary">Oferta: 10%OFF</p>
+            <button class="btn btn-primary btn-sm">Comprar</button>
+        </div>
+    </div>
+</div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-img-top text-center py-3 bg-light">
+                <img src="/static/img/productos/basemaquillaje.jpg" 
+                     alt="Base Líquida Mate" 
+                     class="img-fluid" 
+                     style="max-height: 200px; object-fit: contain;">
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title">Base Líquida Mate</h5>
+                <p class="price text-primary">$24.99</p>
+                <p class="offer text-primary">Oferta: 60%OFF</p>
+                <button class="btn btn-primary btn-sm">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+    <div class="card product-card h-100">
+        <div class="card-img-top text-center py-3 bg-light">
+            <img src="/static/img/productos/licras.jpg" 
+                 alt="Jeans Clásicos Azul" 
+                 class="img-fluid" 
+                 style="max-height: 200px; object-fit: contain;">
+        </div>
+        <div class="card-body text-center">
+            <h5 class="card-title">Licras Multicolores</h5>
+            <p class="price text-primary">$49.99</p>
+            <p class="offer text-primary">Oferta: 90%OFF</p>
+            <button class="btn btn-primary btn-sm">Comprar</button>
+        </div>
+    </div>
+</div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-img-top text-center py-3 bg-light">
+                <img src="/static/img/productos/paletasombras.jpg" 
+                     alt="Paleta de Sombras Profesional" 
+                     class="img-fluid" 
+                     style="max-height: 200px; object-fit: contain;">
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title">Paleta de Sombras</h5>
+                <p class="price text-primary">$32.50</p>
+                <p class="offer text-primary">Oferta: 25%OFF</p>
+                <button class="btn btn-primary btn-sm">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-img-top text-center py-3 bg-light">
+                <img src="/static/img/productos/sandalias.jpg" 
+                 alt="Zapatos Formales Negros" 
+                 class="img-fluid" 
+                 style="max-height: 200px; object-fit: contain;">
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title">Sandalias Negras</h5>
+                <p class="price text-primary">$89.99</p>
+                <p class="offer text-primary">Oferta: 5%OFF</p>
+                <button class="btn btn-primary btn-sm">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-img-top text-center py-3 bg-light">
+                <img src="/static/img/productos/juegosabana.jpg" 
+                 alt="Juego de Sábanas Algodón" 
+                 class="img-fluid" 
+                 style="max-height: 200px; object-fit: contain;">
+            </div>
+            <div class="card-body text-center">
+            <h5 class="card-title">Juego de Sábanas</h5>
+            <p class="price text-primary">$39.99</p>
+            <p class="offer text-primary">Oferta: 15%OFF</p>
+            <button class="btn btn-primary btn-sm">Comprar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card product-card h-100">
+            <div class="card-img-top text-center py-3 bg-light">
+                <img src="/static/img/productos/juegoollas.jpg" 
+                 alt="Juego de Ollas Antiadherentes" 
+                 class="img-fluid" 
+                 style="max-height: 200px; object-fit: contain;">
+            </div>
+            <div class="card-body text-center">
+            <h5 class="card-title">Juego de Ollas</h5>
+            <p class="price text-primary">$69.99</p>
+            <p class="offer text-primary">Oferta: 40%OFF</p>
+            <button class="btn btn-primary btn-sm">Comprar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
