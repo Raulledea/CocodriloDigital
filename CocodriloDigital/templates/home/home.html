@@ -1,47 +1,61 @@
 {% extends "base/base.html" %}
 {% load static %}
 
-
 {% block head_extra %}
-    <link rel="stylesheet" href="{% static 'style/home/style.css' %}">
+<link rel="stylesheet" href="{% static 'style/base.css' %}">
+<link rel="stylesheet" href="{% static 'style/product.css' %}?v=1">
 {% endblock head_extra %}
 
-
-
 {% block content %}
-
-    <div class="products-grid">
+<div class="container-fluid py-5">
+    <div class="products-grid row g-4">
         {% for product in discounted_products %}
-            <article class="product-card">
-                <div class="img-center">
-                    {% if product.image and product.image.url %}
-                        <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="product-image">
-                    {% else %}
-                        <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen de {{ product.name }}" class="product-image">
-                    {% endif %}
-                </div>
-
-                {% if product.final_price < product.price %}
-                    <div class="discount-badge">Oferta</div>
-                {% endif %}
-
-                <div class="product-card-body">
-                    <h3 class="product-name">{{ product.name }}</h3>
-                    <p class="product-desc">{{ product.description|default:""|truncatechars:100 }}</p>
-                    <div class="price-row">
-                        {% if product.final_price < product.price %}
-                            <span class="original-price">${{ product.price }}</span>
-                            <span class="discounted-price">${{ product.final_price }}</span>
+            <article class="col-lg-3 col-md-4 col-sm-6 product-card">
+                <div class="h-100">
+                    
+                    <!-- Imagen -->
+                    <div class="img-center">
+                        {% if product.image and product.image.url %}
+                            <img src="{{ product.image.url }}"alt="Imagen de {{ product.name }}"class="product-image">
                         {% else %}
-                            <span class="discounted-price">${{ product.price }}</span>
+                            <img src="{% static 'img/default/default01.jpg' %}"alt="Imagen de {{ product.name }}"class="product-image">
+                        {% endif %}
+
+                        {% if product.final_price < product.price %}
+                            <div class="discount-badge">Oferta</div>
                         {% endif %}
                     </div>
-                </div>
 
+                    <!-- Contenido -->
+                    <div class="product-card-body">
+                        <h3 class="product-name">{{ product.name }}</h3>
+
+                        <p class="product-desc">{{ product.description|default:""|truncatechars:100 }}</p>
+
+                        <!-- Precios -->
+                        <div class="price-row">
+                            {% if product.final_price < product.price %}
+                                <span class="original-price">${{ product.price }}</span>
+                                <span class="discounted-price">${{ product.final_price }}</span>
+                            {% else %}
+                                <span class="discounted-price">${{ product.price }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Botón -->
+                        <button class="btn w-100 mt-3">Comprar</button>
+                    </div>
+
+                </div>
             </article>
         {% empty %}
-            <p>No hay productos con descuento en este momento.</p>
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <p class="mb-0">No hay productos con descuento en este momento.</p>
+                </div>
+            </div>
         {% endfor %}
     </div>
+</div>
 
 {% endblock content %}
