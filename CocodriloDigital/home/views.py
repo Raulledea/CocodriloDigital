@@ -37,34 +37,5 @@ def home(request):
     return render(request, 'home/home.html', context)
 
 
-class Home(ListView):
-    """Vista basada en clases (CBV) para la página principal.
-    
-    Alterna a esta vista si prefieres usar Generic Views.
-    Hereda de ListView para listar productos.
-    """
-    model = Product
-    template_name = 'home/home.html'
-    
-    def get_context_data(self, **kwargs):
-        """Construye el contexto añadiendo productos en descuento.
-        
-        Returns:
-            dict: Contexto con productos en descuento para la plantilla.
-        """
-        # Obtiene la fecha/hora actual
-        now = timezone.now()
-        
-        # Filtra productos con promociones activas (igual que en la vista funcional)
-        discounted_products = Product.objects.filter(
-            promotions__discount_percent__isnull=False,
-            promotions__start_date__lte=now,
-            promotions__end_date__gte=now
-        ).distinct()
-        
-        # Obtiene el contexto padre (con la lista de todos los productos)
-        context = super().get_context_data(**kwargs)
-        # Añade los productos en descuento
-        context['discounted_products'] = discounted_products
-        return context
+
     
