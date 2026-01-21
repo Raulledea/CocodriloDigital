@@ -1,30 +1,27 @@
-<nav class="navbar navbar-expand-lg bg-body-secondary">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"> 
-            
-                    <a class="nav-link active" aria-current="page"  href="#">Inicio</a></li>
-            
-                <li class = "nav-item">
-                
-                    <a class="nav-link" href="#">Productos</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">CocodriloDigital</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-                </li>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add_products' %}">Agregar producto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/">Admin</a>
+        </li>
+      </ul>
 
-                <li class="nav-item">
-            
-                    <a class="nav-link" href="#">Carrito</a>
-            
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"  href="#">Login</a>
-                </li>
-            </ul>
-        
-        </div>
-    
+      <form class="d-flex" role="search" method="get" action="{% url 'home' %}">
+        <input name="q" class="form-control me-2" type="search" placeholder="Buscar productos" aria-label="Buscar"/>
+        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+      </form>
     </div>
+  </div>
 </nav>
