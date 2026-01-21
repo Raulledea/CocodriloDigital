@@ -1,0 +1,174 @@
+/* ===============================
+   GRID HOME - 5 TARJETAS POR FILA
+================================ */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas iguales */
+    gap: 24px;
+    padding: 20px 0;
+    margin-bottom: 40px;
+}
+
+/* Para pantallas más pequeñas */
+@media (max-width: 1200px) {
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===============================
+   TARJETA
+================================ */
+.product-card {
+    width: 100%;
+    background: linear-gradient(135deg, #9B67CB, #F38A7A);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    min-height: 380px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important; /* fuente aplicada global */
+}
+
+.product-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* ===============================
+   IMAGEN
+================================ */
+.img-center {
+    position: relative;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.product-image {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.25s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.07);
+}
+
+/* ===============================
+   BADGE OFERTA
+================================ */
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    z-index: 10;
+}
+
+/* ===============================
+   CUERPO
+================================ */
+.product-card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: #000;
+}
+
+/* NOMBRE PRODUCTO - 2 LÍNEAS */
+.product-name {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    height: calc(1.2em * 2);
+    margin-bottom: 6px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-family: inherit; /* hereda Verdana desde .product-card */
+}
+
+/* DESCRIPCIÓN PRODUCTO - 3 LÍNEAS */
+.product-desc {
+    font-size: 13px;
+    line-height: 1.4;
+    height: calc(1.4em * 3);       /* 3 líneas de altura */
+    max-width: 30ch;               /* ancho máximo por línea: 30 caracteres */
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-family: inherit;          /* hereda Verdana desde .product-card */
+}
+
+
+/* PRECIOS */
+.price-row {
+    margin-top: auto;
+    margin-bottom: 12px;
+}
+
+.original-price {
+    font-size: 13px;
+    text-decoration: line-through;
+    color: #333;
+    font-family: inherit;
+}
+
+.discounted-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    font-family: inherit;
+}
+
+/* BOTÓN */
+.product-card .btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+    width: 100%;
+    font-family: inherit;
+}
+
+.product-card .btn:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+}
