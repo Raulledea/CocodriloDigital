@@ -108,4 +108,5 @@ class Promotion(models.Model):
         return self.product.price
     
     def __str__(self):
+        """Retorna identificador de la promoción (nombre del producto)."""
         return self.product.name
