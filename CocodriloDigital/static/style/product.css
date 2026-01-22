@@ -1,4 +1,13 @@
 /* ===============================
+   LINK DE TARJETA DE PRODUCTO
+================================ */
+.product-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: contents;
+}
+
+/* ===============================
    GRID HOME - 5 TARJETAS POR FILA
 ================================ */
 .products-grid {
