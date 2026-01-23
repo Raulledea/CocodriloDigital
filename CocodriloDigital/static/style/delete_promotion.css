@@ -1,0 +1,61 @@
+/* ===============================
+   ELIMINAR PROMOCIÓN
+================================ */
+
+.delete-confirmation {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.promotion-preview {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  border-left: 4px solid #dc3545;
+}
+
+.promotion-preview h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.promotion-preview img {
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.promotion-preview p {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.confirmation-buttons .btn {
+  padding: 10px 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.confirmation-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .confirmation-buttons {
+    flex-direction: column;
+  }
+
+  .confirmation-buttons .btn {
+    width: 100%;
+  }
+}
