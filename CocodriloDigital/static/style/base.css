@@ -14,23 +14,216 @@ body {
     background-position: center;
 }
 
-.navbar {
-    background-color: #1e1e25 !important;   
-    padding: 10px 20px;
+/* ===============================
+   NAVBAR TRANSPARENTE
+================================ */
+
+/* Navbar principal - versión transparente de bg-dark */
+.navbar-dark-transparent {
+    background-color: rgba(33, 37, 41, 0.5) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease;
 }
 
-.navbar-brand img {
-    height: 55px;      
-    width: auto;
+/* Navbar fijo en la parte superior */
+.navbar-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
 }
 
-.navbar-nav .nav-link {
+/* Efecto al hacer scroll (opcional) */
+.navbar-scrolled {
+    background-color: rgba(33, 37, 41, 0.5) !important;
+}
+
+/* Brand del navbar */
+.navbar-dark-transparent .navbar-brand {
+    color: #F38A7A !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 4px #000;
+}
+
+/* Enlaces de navegación */
+.navbar-dark-transparent .navbar-nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.navbar-dark-transparent .navbar-nav .nav-link:hover {
+    color: #fff !important;
+    background-color: #000 !important; /* fondo negro semi-transparente */
+    border-radius: 15px; /* más redondeado */
+}
+
+/* Hover links navbar: fondo negro y letra blanca, sin transición ni transform */
+.navbar-dark-transparent .navbar-nav .nav-link:hover,
+.navbar-dark-transparent .navbar-nav .nav-link.active:hover {
+    color: #fff !important;                /* letra blanca */
+    background-color: #000 !important;     /* fondo negro sólido */
+    border-radius: 8px;                     /* bordes ligeramente redondeados */
+    transform: none !important;             /* elimina cualquier desplazamiento */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* opcional: sombra tipo card */
+    transition: none !important;            /* elimina transición */
+}
+
+
+
+/* ===============================
+   BARRA DE BÚSQUEDA PERSONALIZADA
+================================ */
+
+/* Contenedor de búsqueda */
+.search-container {
+    flex-grow: 1;
+    max-width: 500px;
+}
+
+/* Input de búsqueda */
+.custom-search {
+    background-color: rgba(255, 255, 255, 0.1) !important;
     color: white !important;
-    font-weight: 600;
-    font-size: 17px;
-    transition: 0.3s;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 25px !important;
+    padding: 20px 20px !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease;
+    width: 100%;
+    height: 40px;
 }
 
-.navbar-nav .nav-link:hover {
-    color: #b4b4ff !important; 
+.custom-search:focus {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border-color: #9B67CB !important;
+    box-shadow: 0 0 0 0.25rem rgba(155, 103, 203, 0.25) !important;
+}
+
+/* Placeholder */
+.custom-search::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 1;
+}
+
+/* Botón de búsqueda */
+.custom-search-btn {
+    background: linear-gradient(135deg, #9B67CB, #F38A7A) !important;
+    border: none !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    border-radius: 25px !important;
+    padding: 12px 25px !important;
+    margin-left: 10px !important;
+    transition: all 0.3s ease;
+    height: 40px;
+    min-width: 120px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-search-btn:hover {
+    background: linear-gradient(135deg, #8a56b8, #e2796a) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(155, 103, 203, 0.4);
+    color: #000 !important;
+}
+
+/* ===============================
+   TOGGLER BUTTON
+================================ */
+
+.navbar-dark-transparent .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-dark-transparent .navbar-toggler:focus {
+    box-shadow: 0 0 0 2px rgba(155, 103, 203, 0.5);
+}
+
+.navbar-dark-transparent .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* ===============================
+   BARRA DE BÚSQUEDA EXPANDIDA
+================================ */
+
+/* Form de búsqueda ocupa todo el espacio sobrante entre izquierda y derecha */
+.navbar-dark-transparent .navbar-collapse {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.navbar-dark-transparent form.d-flex {
+    flex: 1; /* Ocupa todo el espacio disponible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 200px; /* Evita que se achique demasiado en pantallas pequeñas */
+}
+
+.navbar-dark-transparent .search-container {
+    flex: 1; /* Input ocupa todo el ancho posible dentro del form */
+}
+
+/* Mantener el botón de búsqueda con su estilo original */
+.navbar-dark-transparent .custom-search-btn {
+    flex: 0 0 auto; /* No crece, mantiene su tamaño */
+    margin-left: 10px;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 992px) {
+    .search-container {
+        max-width: 100% !important;
+        margin: 10px 0;
+    }
+    
+    .custom-search-btn {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+    
+    .navbar-dark-transparent .navbar-nav {
+        margin-bottom: 15px;
+    }
+    
+    .navbar-dark-transparent {
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .custom-search {
+        padding: 10px 15px !important;
+        height: 45px;
+    }
+    
+    .custom-search-btn {
+        padding: 10px 20px !important;
+        height: 50px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem !important;
+    }
+}
+
+/* Espaciador para contenido debajo del navbar fijo */
+.navbar-spacer {
+    height: 70px;
 }

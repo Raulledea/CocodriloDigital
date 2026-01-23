@@ -1,0 +1,179 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'style/product_detail.css' %}">
+{% endblock head_extra %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="form-container">
+      <h1>{% if edit %}Editar Oferta{% else %}Crear Nueva Oferta{% endif %}</h1>
+      
+      <!-- Información del producto -->
+      <div class="product-info-box mb-4">
+        <div class="row">
+          <div class="col-md-3">
+            {% if product.image and product.image.url %}
+              <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="img-fluid rounded">
+            {% else %}
+              <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid rounded">
+            {% endif %}
+          </div>
+          <div class="col-md-9">
+            <h3>{{ product.name }}</h3>
+            <p><strong>Categoría:</strong> {{ product.category.name }}</p>
+            <p><strong>Precio base:</strong> ${{ product.price }}</p>
+            <p><strong>Stock:</strong> {{ product.stock }} unidades</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de promoción -->
+      <form method="POST" class="promotion-form">
+        {% csrf_token %}
+        
+        <div class="form-group mb-3">
+          <label for="{{ form.discount_percent.id_for_label }}" class="form-label">
+            {{ form.discount_percent.label }}
+          </label>
+          {{ form.discount_percent }}
+          {% if form.discount_percent.errors %}
+            <div class="alert alert-danger mt-2">
+              {{ form.discount_percent.errors }}
+            </div>
+          {% endif %}
+          <small class="form-text text-muted">Ingrese un valor entre 1 y 100</small>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group mb-3">
+              <label for="{{ form.start_date.id_for_label }}" class="form-label">
+                {{ form.start_date.label }}
+              </label>
+              {{ form.start_date }}
+              {% if form.start_date.errors %}
+                <div class="alert alert-danger mt-2">
+                  {{ form.start_date.errors }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group mb-3">
+              <label for="{{ form.end_date.id_for_label }}" class="form-label">
+                {{ form.end_date.label }}
+              </label>
+              {{ form.end_date }}
+              {% if form.end_date.errors %}
+                <div class="alert alert-danger mt-2">
+                  {{ form.end_date.errors }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="button-group mt-4">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> {% if edit %}Guardar Cambios{% else %}Crear Oferta{% endif %}
+          </button>
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #f8f9fa;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .form-container h1 {
+      color: #333;
+      margin-bottom: 25px;
+      font-size: 24px;
+    }
+
+    .product-info-box {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .product-info-box h3 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .product-info-box p {
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-control {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px 12px;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .form-control:focus {
+      border-color: #0d6efd;
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .button-group .btn {
+      padding: 10px 25px;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .button-group .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 20px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+{% endblock content %}
