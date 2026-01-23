@@ -16,10 +16,12 @@
 
   {% for category in categories %}
     <section class="category-section mb-4">
-      <h2>{{ category.name }}</h2>
-      {% if category.description %}
-        <p class="text-muted">{{ category.description }}</p>
-      {% endif %}
+      <div class="category-header">
+        <h2><a href="{% url 'category_detail' category.id %}" class="category-link">{{ category.name }}</a></h2>
+        {% if category.description %}
+          <p class="text-muted">{{ category.description }}</p>
+        {% endif %}
+      </div>
 
       <div class="products-grid">
         {% for product in category.products.all %}

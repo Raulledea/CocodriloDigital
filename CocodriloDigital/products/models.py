@@ -36,7 +36,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="products/", blank=True, null=True, help_text="Foto del producto")
     
     # Categoría a la cual pertenece el producto
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', help_text="Categoría")
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products', help_text="Categoría")
     
     @property
     def final_price(self):
