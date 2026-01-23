@@ -18,12 +18,14 @@
 
     <!-- Botones de acción para la categoría -->
     <div class="category-action-buttons mb-4">
-      <a href="{% url 'edit_category' category.id %}" class="btn btn-warning">
-        <i class="fas fa-edit"></i> Modificar Categoría
-      </a>
-      <a href="{% url 'delete_category' category.id %}" class="btn btn-danger">
-        <i class="fas fa-trash"></i> Eliminar Categoría
-      </a>
+      {% if user.is_superuser %}
+        <a href="{% url 'edit_category' category.id %}" class="btn btn-warning">
+          <i class="fas fa-edit"></i> Modificar Categoría
+        </a>
+        <a href="{% url 'delete_category' category.id %}" class="btn btn-danger">
+          <i class="fas fa-trash"></i> Eliminar Categoría
+        </a>
+      {% endif %}
       <a href="{% url 'list_products' %}" class="btn btn-secondary">
         <i class="fas fa-arrow-left"></i> Volver a Productos
       </a>
@@ -44,11 +46,10 @@
                   {% else %}
                     <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen por defecto" class="product-image">
                   {% endif %}
+                  {% if product.final_price < product.price %}
+                    <div class="discount-badge">Oferta</div>
+                  {% endif %}
                 </div>
-
-                {% if product.final_price < product.price %}
-                  <div class="discount-badge">Oferta</div>
-                {% endif %}
 
                 <div class="product-card-body">
                   <h3 class="product-name">{{ product.name }}</h3>
