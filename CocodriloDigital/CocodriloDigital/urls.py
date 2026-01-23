@@ -22,8 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),         # Página principal
-    path('products/', include('products.urls')),  # Sección de productos
-    path('', include('category.urls')),  # Rutas de categorías
+    path('productos/', include('products.urls')),  # Sección de productos
+    path('categoria/', include('category.urls')),  # Rutas de categorías
 ]
 
 # Servir archivos multimedia en desarrollo
