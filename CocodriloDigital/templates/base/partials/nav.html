@@ -11,19 +11,57 @@
           <a class="nav-link" href="{% url 'list_products' %}">Productos</a>
         </li>
 
-         <li class="nav-item">
-          <a class="nav-link" href="#">Log In</a>
-        </li>
-
-         <li class="nav-item">
-          <a class="nav-link" href="#">Log Up</a>
-        </li>
+        {% if user.is_authenticated %}
+          {% if user.is_superuser %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_products' %}">+ Producto</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_category' %}">+ Categoría</a>
+            </li>
+          {% endif %}
+        {% endif %}
       </ul>
 
-      <form class="d-flex" role="search" method="get" action="{% url 'home' %}">
+      <form class="d-flex me-3" role="search" method="get" action="{% url 'home' %}">
         <input name="q" class="form-control me-2" type="search" placeholder="Buscar productos" aria-label="Buscar"/>
         <button class="btn btn-outline-primary" type="submit">Buscar</button>
       </form>
+
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-user"></i> {{ user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              {% if user.is_superuser %}
+                <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel de Admin</a></li>
+                <li><hr class="dropdown-divider"></li>
+              {% endif %}
+              <li>
+                <form method="post" action="{% url 'users:logout' %}" style="margin: 0;">
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item" style="border: none; background: none; text-align: left; cursor: pointer;">
+                    Cerrar Sesión
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:login' %}">
+              <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:register' %}">
+              <i class="fas fa-user-plus"></i> Registrarse
+            </a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
   </div>
 </nav>
