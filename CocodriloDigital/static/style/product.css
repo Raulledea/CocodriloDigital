@@ -1,4 +1,13 @@
 /* ===============================
+   LINK DE TARJETA DE PRODUCTO
+================================ */
+.product-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: contents;
+}
+
+/* ===============================
    GRID HOME - 5 TARJETAS POR FILA
 ================================ */
 .products-grid {
@@ -171,4 +180,23 @@
 .product-card .btn:hover {
     background-color: #222;
     transform: translateY(-2px);
+}
+
+/* ===============================
+   ESTILOS PARA CATEGORÍA EN LIST_PRODUCTS
+================================ */
+.category-header {
+    margin-bottom: 20px;
+}
+
+.category-link {
+    text-decoration: none;
+    color: #9B67CB;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.category-link:hover {
+    color: #F38A7A;
+    text-decoration: underline;
 }

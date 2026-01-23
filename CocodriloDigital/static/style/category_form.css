@@ -1,0 +1,71 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.form-container {
+    background: linear-gradient(135deg, #9B67CB, #F38A7A);
+    border-radius: 14px;
+    padding: 40px 30px; /* un poco más de padding */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); /* sombra más suave y elegante */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 30px auto;
+    max-width: 700px;
+    color: #fff;
+}
+
+.form-container h1 {
+    color: #000 !important; /* título blanco para mejor contraste */
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Inputs y textarea */
+.category-form input,
+.category-form textarea,
+.category-form select {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    width: 100%;
+}
+
+.category-form input:focus,
+.category-form textarea:focus,
+.category-form select:focus {
+    outline: none;
+    border-color: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+/* Botones */
+.button-group .btn {
+    border-radius: 25px;  /* Misma curvatura para todos */
+}
+
+.button-group .btn-primary {
+    background-color: #000;
+    border-color: #000;
+}
+
+.button-group .btn-primary:hover {
+    background-color: #000;
+    border-color: #000;
+}
+
+.button-group .btn-secondary {
+    background-color: #fff;
+    border-color: #000;
+    color: #000;
+}
+
+.button-group .btn-secondary:hover {
+    background-color: #f2f2f2;
+    border-color: #000;
+}
+
