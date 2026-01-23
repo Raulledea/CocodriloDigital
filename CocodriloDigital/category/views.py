@@ -1,31 +1,41 @@
 """Vistas de la aplicación 'category'.
 
-Contiene la lógica para gestionar categorías.
+Contiene la lógica para gestionar categorías con optimizaciones.
 """
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
 from .forms import CategoryForm
 from .models import Category
+from CocodriloDigital.utils import superuser_required
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def add_category(request):
     """Vista para añadir una nueva categoría.
     
     GET: Muestra formulario vacío de creación de categoría.
     POST: Procesa el formulario y guarda la categoría si es válido.
     
-    Redirige a la lista de productos después de crear la categoría.
+    Returns:
+        HttpResponse: Formulario o redirección a list_products tras crear.
     """
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Redirige a la lista de productos después de guardar
+            category = form.save()
+            messages.success(request, f'Categoría "{category.name}" creada exitosamente.')
             return redirect('list_products')
+        else:
+            messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
         form = CategoryForm()
+    
     return render(request, 'category/add_category.html', {'form': form})
 
 
+@require_http_methods(["GET"])
 def category_detail(request, category_id):
     """Vista para ver los detalles de una categoría.
     
@@ -47,6 +57,8 @@ def category_detail(request, category_id):
     return render(request, 'category/category_detail.html', context)
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def edit_category(request, category_id):
     """Vista para editar una categoría existente.
     
@@ -65,8 +77,11 @@ def edit_category(request, category_id):
     if request.method == "POST":
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
-            form.save()
+            category = form.save()
+            messages.success(request, f'Categoría "{category.name}" actualizada exitosamente.')
             return redirect('category_detail', category_id=category.id)
+        else:
+            messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
         form = CategoryForm(instance=category)
     
@@ -78,11 +93,13 @@ def edit_category(request, category_id):
     return render(request, 'category/add_category.html', context)
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def delete_category(request, category_id):
     """Vista para eliminar una categoría.
     
     GET: Muestra una página de confirmación con información sobre productos.
-    POST: Elimina la categoría. Los productos asociados quedarán sin categoría asignada.
+    POST: Elimina la categoría. Los productos asociados quedarán sin categoría.
     
     Args:
         request: La solicitud HTTP.
@@ -94,8 +111,9 @@ def delete_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     
     if request.method == "POST":
-        # Los productos no se eliminarán, solo perderán la categoría (category=NULL)
+        category_name = category.name
         category.delete()
+        messages.success(request, f'Categoría "{category_name}" eliminada exitosamente.')
         return redirect('list_products')
     
     context = {

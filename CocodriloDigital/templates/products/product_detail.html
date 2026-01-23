@@ -27,10 +27,17 @@
           <h1 class="product-title">{{ product.name }}</h1>
 
           <!-- Categoría -->
-          <p class="text-muted">
-            <strong>Categoría:</strong> 
-            <a href="{% url 'list_products' %}">{{ product.category.name }}</a>
-          </p>
+          {% if product.category %}
+            <p class="text-muted">
+              <strong>Categoría:</strong> 
+              <a href="{% url 'category_detail' product.category.id %}">{{ product.category.name }}</a>
+            </p>
+          {% else %}
+            <p class="text-muted">
+              <strong>Categoría:</strong> 
+              <span class="badge bg-warning">Sin categoría</span>
+            </p>
+          {% endif %}
 
           <!-- Descripción -->
           {% if product.description %}
@@ -87,21 +94,25 @@
             {% else %}
               <div class="no-promotion mb-4">
                 <p class="text-muted">Este producto no tiene ofertas activas.</p>
-                <a href="{% url 'create_promotion' product.id %}" class="btn btn-success">
-                  <i class="fas fa-plus"></i> Crear Oferta
-                </a>
+                {% if user.is_superuser %}
+                  <a href="{% url 'create_promotion' product.id %}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Crear Oferta
+                  </a>
+                {% endif %}
               </div>
             {% endif %}
           {% endwith %}
 
           <!-- Botones de acción -->
           <div class="action-buttons">
-            <a href="{% url 'edit_product' product.id %}" class="btn btn-warning me-2">
-              <i class="fas fa-edit"></i> Modificar Producto
-            </a>
-            <a href="{% url 'delete_product' product.id %}" class="btn btn-danger me-2">
-              <i class="fas fa-trash"></i> Eliminar Producto
-            </a>
+            {% if user.is_superuser %}
+              <a href="{% url 'edit_product' product.id %}" class="btn btn-warning me-2">
+                <i class="fas fa-edit"></i> Modificar Producto
+              </a>
+              <a href="{% url 'delete_product' product.id %}" class="btn btn-danger me-2">
+                <i class="fas fa-trash"></i> Eliminar Producto
+              </a>
+            {% endif %}
             <a href="{% url 'list_products' %}" class="btn btn-secondary">
               <i class="fas fa-arrow-left"></i> Volver a la Lista
             </a>
