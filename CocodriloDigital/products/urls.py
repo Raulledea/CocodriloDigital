@@ -17,4 +17,15 @@ urlpatterns = [
     path('<int:product_id>/edit/', views.edit_product, name='edit_product'),
     # Ruta para eliminar un producto (ej. /products/1/delete/)
     path('<int:product_id>/delete/', views.delete_product, name='delete_product'),
+    
+    # Rutas para promociones/ofertas
+    # Crear una nueva promoción (ej. /products/1/promotion/create/)
+    path('<int:product_id>/promotion/create/', views.create_promotion, name='create_promotion'),
+    # Ver detalles de una promoción (ej. /products/1/promotion/1/)
+    path('<int:product_id>/promotion/<int:promotion_id>/', views.promotion_detail, name='promotion_detail'),
+    # Editar una promoción (ej. /products/1/promotion/1/edit/)
+    path('<int:product_id>/promotion/<int:promotion_id>/edit/', views.edit_promotion, name='edit_promotion'),
+    # Eliminar una promoción (ej. /products/1/promotion/1/delete/)
+    path('<int:product_id>/promotion/<int:promotion_id>/delete/', views.delete_promotion, name='delete_promotion'),
 ]
+

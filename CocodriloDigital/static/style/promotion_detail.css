@@ -1,0 +1,209 @@
+/* ===============================
+   DETALLES DE LA PROMOCIÓN
+================================ */
+
+.promotion-detail-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.promotion-header {
+  text-align: center;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 20px;
+}
+
+.promotion-header h1 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.promotion-header .text-muted {
+  color: #666;
+}
+
+/* Sección de Producto */
+.product-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.product-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.product-section p {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.product-section img {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Sección de Información de Oferta */
+.promotion-info-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+}
+
+.promotion-info-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.promotion-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border-left: 3px solid #ffc107;
+}
+
+.detail-row .label {
+  font-weight: 600;
+  color: #333;
+  flex: 0 0 auto;
+}
+
+.detail-row .value {
+  color: #555;
+  text-align: right;
+  flex: 1;
+  padding-left: 20px;
+}
+
+.detail-row .highlight-discount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d9534f;
+}
+
+/* Sección de Cálculo de Precio */
+.price-calculation-section {
+  background-color: #fff3cd;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ffc107;
+  border-left: 4px solid #ff9800;
+}
+
+.price-calculation-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.price-calc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+}
+
+.calc-item.total {
+  background-color: #fff;
+  border: 2px solid #ffc107;
+  font-weight: bold;
+}
+
+.calc-label {
+  color: #333;
+  font-weight: 500;
+}
+
+.calc-value {
+  color: #555;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.calc-discount {
+  color: #d9534f;
+}
+
+.calc-item.total .calc-value {
+  color: #5cb85c;
+  font-size: 18px;
+}
+
+/* Botones de Acción */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+  padding: 10px 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .promotion-detail-container {
+    padding: 20px;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .detail-row .value {
+    text-align: left;
+    padding-left: 0;
+  }
+
+  .calc-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons .btn {
+    width: 100%;
+    min-width: 150px;
+  }
+}

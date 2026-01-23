@@ -77,6 +77,78 @@
   margin-bottom: 10px;
 }
 
+/* ===============================
+   SECCIÓN DE PROMOCIONES
+================================ */
+
+.promotion-section {
+  background-color: #fff3cd;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ffc107;
+  border-left: 4px solid #ff9800;
+}
+
+.promotion-section h4 {
+  color: #333;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.promotion-info {
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.promotion-info p {
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 14px;
+}
+
+.promotion-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.promotion-buttons .btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.promotion-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Sección sin promoción */
+.no-promotion {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  border-left: 4px solid #6c757d;
+  text-align: center;
+}
+
+.no-promotion p {
+  margin: 0 0 15px 0;
+  color: #666;
+}
+
+.no-promotion .btn {
+  padding: 8px 25px;
+  transition: all 0.3s ease;
+}
+
+.no-promotion .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .action-buttons {
   display: flex;
   flex-wrap: wrap;

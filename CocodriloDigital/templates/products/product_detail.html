@@ -63,6 +63,37 @@
             {% endif %}
           </div>
 
+          <!-- Detalles de la Oferta -->
+          {% with active_promotion=product.promotions.all|first %}
+            {% if active_promotion %}
+              <div class="promotion-section mb-4">
+                <h4>Detalles de la Oferta</h4>
+                <div class="promotion-info">
+                  <p><strong>Descuento:</strong> {{ active_promotion.discount_percent }}%</p>
+                  <p><strong>Desde:</strong> {{ active_promotion.start_date|date:"d/m/Y H:i" }}</p>
+                  <p><strong>Hasta:</strong> {{ active_promotion.end_date|date:"d/m/Y H:i" }}</p>
+                  {% if active_promotion.is_active %}
+                    <span class="badge bg-success">Oferta Activa</span>
+                  {% else %}
+                    <span class="badge bg-danger">Oferta Inactiva</span>
+                  {% endif %}
+                </div>
+                <div class="promotion-buttons mt-3">
+                  <a href="{% url 'promotion_detail' product.id active_promotion.id %}" class="btn btn-info btn-sm">
+                    <i class="fas fa-eye"></i> Ver Detalles
+                  </a>
+                </div>
+              </div>
+            {% else %}
+              <div class="no-promotion mb-4">
+                <p class="text-muted">Este producto no tiene ofertas activas.</p>
+                <a href="{% url 'create_promotion' product.id %}" class="btn btn-success">
+                  <i class="fas fa-plus"></i> Crear Oferta
+                </a>
+              </div>
+            {% endif %}
+          {% endwith %}
+
           <!-- Botones de acción -->
           <div class="action-buttons">
             <a href="{% url 'edit_product' product.id %}" class="btn btn-warning me-2">

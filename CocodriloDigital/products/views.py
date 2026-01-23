@@ -4,9 +4,10 @@ Contiene la lógica para gestionar productos.
 """
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
-from .forms import ProductForm
+from django.utils import timezone
+from .forms import ProductForm, PromotionForm
 from category.models import Category
-from .models import Product
+from .models import Product, Promotion
 
 
 def list_products(request):
@@ -62,7 +63,7 @@ def add_product(request):
         if form.is_valid():
             form.save()
             # Redirige a la página principal después de guardar
-            return redirect('home')
+            return redirect('list_products')
     else:
         form = ProductForm()
     return render(request, 'products/add_products.html', {'form': form})
@@ -123,3 +124,129 @@ def delete_product(request, product_id):
         'product': product,
     }
     return render(request, 'products/delete_product.html', context)
+
+
+def create_promotion(request, product_id):
+    """Vista para crear una nueva promoción para un producto.
+    
+    GET: Muestra el formulario de creación de promoción.
+    POST: Procesa el formulario y guarda la promoción si es válido.
+    
+    Args:
+        request: La solicitud HTTP.
+        product_id (int): El ID del producto para el que crear la promoción.
+        
+    Returns:
+        HttpResponse: El formulario renderizado o redirección tras guardar.
+    """
+    product = get_object_or_404(Product, pk=product_id)
+    
+    if request.method == "POST":
+        form = PromotionForm(request.POST)
+        if form.is_valid():
+            promotion = form.save(commit=False)
+            promotion.product = product
+            promotion.save()
+            return redirect('promotion_detail', product_id=product.id, promotion_id=promotion.id)
+    else:
+        form = PromotionForm()
+    
+    context = {
+        'form': form,
+        'product': product,
+    }
+    return render(request, 'products/create_promotion.html', context)
+
+
+def promotion_detail(request, product_id, promotion_id):
+    """Vista para ver los detalles de una promoción.
+    
+    Muestra la información completa de una promoción incluyendo
+    el período activo, porcentaje de descuento, y botones para
+    modificar o eliminar.
+    
+    Args:
+        request: La solicitud HTTP.
+        product_id (int): El ID del producto.
+        promotion_id (int): El ID de la promoción.
+        
+    Returns:
+        HttpResponse: La plantilla renderizada con los detalles de la promoción.
+    """
+    product = get_object_or_404(Product, pk=product_id)
+    promotion = get_object_or_404(Promotion, pk=promotion_id, product=product)
+    
+    # Calcular precios
+    from decimal import Decimal
+    discount_amount = product.price * Decimal(promotion.discount_percent) / Decimal(100)
+    discounted_price = product.price - discount_amount
+    
+    context = {
+        'product': product,
+        'promotion': promotion,
+        'discount_amount': discount_amount,
+        'discounted_price': discounted_price,
+    }
+    return render(request, 'products/promotion_detail.html', context)
+
+
+def edit_promotion(request, product_id, promotion_id):
+    """Vista para editar una promoción existente.
+    
+    GET: Muestra el formulario rellenado con los datos de la promoción.
+    POST: Procesa el formulario y actualiza la promoción si es válido.
+    
+    Args:
+        request: La solicitud HTTP.
+        product_id (int): El ID del producto.
+        promotion_id (int): El ID de la promoción a editar.
+        
+    Returns:
+        HttpResponse: El formulario renderizado o redirección tras guardar.
+    """
+    product = get_object_or_404(Product, pk=product_id)
+    promotion = get_object_or_404(Promotion, pk=promotion_id, product=product)
+    
+    if request.method == "POST":
+        form = PromotionForm(request.POST, instance=promotion)
+        if form.is_valid():
+            form.save()
+            return redirect('promotion_detail', product_id=product.id, promotion_id=promotion.id)
+    else:
+        form = PromotionForm(instance=promotion)
+    
+    context = {
+        'form': form,
+        'product': product,
+        'promotion': promotion,
+        'edit': True,
+    }
+    return render(request, 'products/create_promotion.html', context)
+
+
+def delete_promotion(request, product_id, promotion_id):
+    """Vista para eliminar una promoción.
+    
+    GET: Muestra una página de confirmación.
+    POST: Elimina la promoción y redirige al detalle del producto.
+    
+    Args:
+        request: La solicitud HTTP.
+        product_id (int): El ID del producto.
+        promotion_id (int): El ID de la promoción a eliminar.
+        
+    Returns:
+        HttpResponse: Página de confirmación o redirección tras eliminar.
+    """
+    product = get_object_or_404(Product, pk=product_id)
+    promotion = get_object_or_404(Promotion, pk=promotion_id, product=product)
+    
+    if request.method == "POST":
+        promotion.delete()
+        return redirect('product_detail', product_id=product.id)
+    
+    context = {
+        'product': product,
+        'promotion': promotion,
+    }
+    return render(request, 'products/delete_promotion.html', context)
