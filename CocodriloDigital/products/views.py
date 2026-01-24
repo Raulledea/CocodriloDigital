@@ -1,30 +1,37 @@
 """Vistas de la aplicación 'products'.
 
-Contiene la lógica para gestionar productos.
+Contiene la lógica para gestionar productos con optimizaciones de queries
+y validaciones de permisos.
 """
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
-from django.utils import timezone
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
+from decimal import Decimal
 from .forms import ProductForm, PromotionForm
-from category.models import Category
 from .models import Product, Promotion
+from category.models import Category
+from CocodriloDigital.utils import superuser_required
 
 
 def list_products(request):
     """Muestra todos los productos agrupados por categoría.
 
-    Recupera las categorías que tienen productos y prefetches los productos
-    para reducir consultas. Renderiza la plantilla `products/list_by_category.html`.
+    Recupera categorías con productos usando prefetch_related para optimizar.
+    
+    Returns:
+        HttpResponse: Plantilla list_products.html con categorías y productos.
     """
-    # Obtener categorías que tienen al menos un producto
-    categories = Category.objects.prefetch_related('products').filter(products__isnull=False).distinct()
+    categories = Category.objects.prefetch_related(
+        'products__promotions'
+    ).filter(
+        products__isnull=False
+    ).distinct()
 
-    context = {
-        'categories': categories,
-    }
+    context = {'categories': categories}
     return render(request, 'products/list_products.html', context)
 
 
+@require_http_methods(["GET"])
 def product_detail(request, product_id):
     """Muestra la información detallada de un producto específico.
     
@@ -49,26 +56,33 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', context)
 
 
-
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def add_product(request):
     """Vista para añadir un nuevo producto.
     
     GET: Muestra formulario vacío de creación de producto.
     POST: Procesa el formulario y guarda el producto si es válido.
     
-    Redirige a 'home' después de crear el producto.
+    Returns:
+        HttpResponse: Formulario o redirección a list_products tras crear.
     """
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            # Redirige a la página principal después de guardar
+            product = form.save()
+            messages.success(request, f'Producto "{product.name}" creado exitosamente.')
             return redirect('list_products')
+        else:
+            messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
         form = ProductForm()
+    
     return render(request, 'products/add_products.html', {'form': form})
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def edit_product(request, product_id):
     """Vista para editar un producto existente.
     
@@ -87,9 +101,11 @@ def edit_product(request, product_id):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            form.save()
-            # Redirige al detalle del producto después de guardar
+            product = form.save()
+            messages.success(request, f'Producto "{product.name}" actualizado exitosamente.')
             return redirect('product_detail', product_id=product.id)
+        else:
+            messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
         form = ProductForm(instance=product)
     
@@ -101,6 +117,8 @@ def edit_product(request, product_id):
     return render(request, 'products/add_products.html', context)
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def delete_product(request, product_id):
     """Vista para eliminar un producto.
     
@@ -117,15 +135,17 @@ def delete_product(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     
     if request.method == "POST":
+        product_name = product.name
         product.delete()
+        messages.success(request, f'Producto "{product_name}" eliminado exitosamente.')
         return redirect('list_products')
     
-    context = {
-        'product': product,
-    }
+    context = {'product': product}
     return render(request, 'products/delete_product.html', context)
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def create_promotion(request, product_id):
     """Vista para crear una nueva promoción para un producto.
     
@@ -147,7 +167,10 @@ def create_promotion(request, product_id):
             promotion = form.save(commit=False)
             promotion.product = product
             promotion.save()
+            messages.success(request, f'Promoción creada exitosamente para "{product.name}".')
             return redirect('promotion_detail', product_id=product.id, promotion_id=promotion.id)
+        else:
+            messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
         form = PromotionForm()
     
@@ -158,12 +181,13 @@ def create_promotion(request, product_id):
     return render(request, 'products/create_promotion.html', context)
 
 
+@require_http_methods(["GET"])
 def promotion_detail(request, product_id, promotion_id):
     """Vista para ver los detalles de una promoción.
     
     Muestra la información completa de una promoción incluyendo
     el período activo, porcentaje de descuento, y botones para
-    modificar o eliminar.
+    modificar o eliminar (si es superusuario).
     
     Args:
         request: La solicitud HTTP.
@@ -176,8 +200,6 @@ def promotion_detail(request, product_id, promotion_id):
     product = get_object_or_404(Product, pk=product_id)
     promotion = get_object_or_404(Promotion, pk=promotion_id, product=product)
     
-    # Calcular precios
-    from decimal import Decimal
     discount_amount = product.price * Decimal(promotion.discount_percent) / Decimal(100)
     discounted_price = product.price - discount_amount
     
@@ -190,6 +212,8 @@ def promotion_detail(request, product_id, promotion_id):
     return render(request, 'products/promotion_detail.html', context)
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def edit_promotion(request, product_id, promotion_id):
     """Vista para editar una promoción existente.
     
@@ -210,8 +234,11 @@ def edit_promotion(request, product_id, promotion_id):
     if request.method == "POST":
         form = PromotionForm(request.POST, instance=promotion)
         if form.is_valid():
-            form.save()
+            promotion = form.save()
+            messages.success(request, 'Promoción actualizada exitosamente.')
             return redirect('promotion_detail', product_id=product.id, promotion_id=promotion.id)
+        else:
+            messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
         form = PromotionForm(instance=promotion)
     
@@ -224,6 +251,8 @@ def edit_promotion(request, product_id, promotion_id):
     return render(request, 'products/create_promotion.html', context)
 
 
+@superuser_required()
+@require_http_methods(["GET", "POST"])
 def delete_promotion(request, product_id, promotion_id):
     """Vista para eliminar una promoción.
     
@@ -243,6 +272,7 @@ def delete_promotion(request, product_id, promotion_id):
     
     if request.method == "POST":
         promotion.delete()
+        messages.success(request, 'Promoción eliminada exitosamente.')
         return redirect('product_detail', product_id=product.id)
     
     context = {

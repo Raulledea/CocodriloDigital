@@ -1,29 +1,49 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand" href="{% url 'home' %}">CocodriloDigital</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-dark-transparent navbar-fixed">
+    <div class="container-fluid">
+        <!-- IZQUIERDA: Brand + Links principales -->
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand me-3" href="{% url 'home' %}">
+                <img src="/static/img/logo.png" alt="CocodriloDigital" height="50">
+            </a>
+            <ul class="navbar-nav d-flex flex-row align-items-center gap-2 mb-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'list_products' %}">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Carrito</a>
+                </li>
+            </ul>
+        </div>
 
-    <div class="collapse navbar-collapse" id="mainNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_products' %}">Productos</a>
-        </li>
+        <!-- CENTRO: Barra de búsqueda -->
+        <form class="d-flex align-items-center mx-auto" role="search" method="get" action="{% url 'home' %}">
+            <div class="search-container">
+                <input name="q" class="form-control me-2 custom-search" type="search" 
+                       placeholder="Buscar productos" aria-label="Buscar"/>
+            </div>
+            <button class="btn custom-search-btn" type="submit">Buscar</button>
+        </form>
 
-         <li class="nav-item">
-          <a class="nav-link" href="#">Log In</a>
-        </li>
+        <!-- DERECHA: Login y Sign Up -->
+        <ul class="navbar-nav d-flex flex-row align-items-center gap-2 mb-0">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Sing Up</a>
+            </li>
+        </ul>
 
-         <li class="nav-item">
-          <a class="nav-link" href="#">Log Up</a>
-        </li>
-      </ul>
-
-      <form class="d-flex" role="search" method="get" action="{% url 'home' %}">
-        <input name="q" class="form-control me-2" type="search" placeholder="Buscar productos" aria-label="Buscar"/>
-        <button class="btn btn-outline-primary" type="submit">Buscar</button>
-      </form>
+        <!-- Toggler para móviles -->
+        <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
-  </div>
 </nav>
+
+<!-- Espacio para que el contenido no quede detrás del navbar fijo -->
+<div class="navbar-spacer"></div>
