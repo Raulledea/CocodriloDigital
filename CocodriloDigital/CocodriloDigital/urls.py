@@ -25,6 +25,7 @@ urlpatterns = [
     path('login/', include('login.urls')),  # Login
     path('productos/', include('products.urls')),  # Sección de productos
     path('categoria/', include('category.urls')),  # Rutas de categorías
+    path('auth/', include('users.urls')),  # Autenticación
 ]
 
 # Servir archivos multimedia en desarrollo

@@ -1,37 +1,28 @@
 """Vistas de la aplicación 'home' (página principal).
 
-Muestra productos con descuentos activos.
+Muestra productos con descuentos activos de forma optimizada.
 """
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 from products.models import Product
-from django.utils import timezone
-from django.views.generic import ListView
 
 
+@require_http_methods(["GET"])
 def home(request):
-    """Vista funcional para la página principal.
+    """Vista para la página principal optimizada.
     
-    Obtiene todos los productos que tienen promociones activas (en rango de fecha)
-    y los pasa a la plantilla home/home.html.
+    Obtiene todos los productos que tienen promociones activas usando
+    el manager optimizado para reducir consultas a la base de datos.
     
     Args:
         request: Objeto de solicitud HTTP.
     
     Returns:
-        HttpResponse: Plantilla home.html con lista de productos en descuento.
+        HttpResponse: Plantilla home.html con productos en descuento.
     """
-    # Obtiene la fecha/hora actual
-    now = timezone.now()
+    # Usa el manager optimizado para obtener productos con descuentos activos
+    discounted_products = Product.objects.with_discounts()
     
-    # Filtra productos que tienen al menos una promoción activa
-    # Usa .distinct() para evitar duplicados si hay varias promociones
-    discounted_products = Product.objects.filter(
-        promotions__discount_percent__isnull=False,  # Que tenga descuento registrado
-        promotions__start_date__lte=now,  # Que haya comenzado
-        promotions__end_date__gte=now  # Que no haya terminado
-    ).distinct()
-    
-    # Prepara el contexto con los datos
     context = {'discounted_products': discounted_products}
     
     return render(request, 'home/home.html', context)

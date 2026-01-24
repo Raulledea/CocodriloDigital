@@ -9,10 +9,12 @@
   <h1>Productos por categoría</h1>
 
   <!-- Enlaces de acción rápida -->
-  <div class="mb-4">
-    <a href="{% url 'add_products' %}" class="btn btn-primary me-2">+ Agregar Producto</a>
-    <a href="{% url 'add_category' %}" class="btn btn-secondary">+ Agregar Categoría</a>
-  </div>
+  {% if user.is_superuser %}
+    <div class="mb-4">
+      <a href="{% url 'add_products' %}" class="btn btn-primary me-2">+ Agregar Producto</a>
+      <a href="{% url 'add_category' %}" class="btn btn-secondary">+ Agregar Categoría</a>
+    </div>
+  {% endif %}
 
   <div class="products-page">
 
@@ -66,6 +68,9 @@
                   <p class="discounted-price-detail">${{ product.final_price }}</p>
                 {% else %}
                   <p class="final-price-detail">${{ product.price }}</p>
+                {% endif %}
+                {% if product.final_price < product.price %}
+                  <div class="discount-badge">Oferta</div>
                 {% endif %}
               </div>
 
