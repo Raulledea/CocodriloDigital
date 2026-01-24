@@ -1,3 +1,8 @@
+@font-face {
+    font-family: lora;
+    src: url('../../fonts/Lora-Medium.ttf');
+}
+
 /* Fondo general */
 body {
     min-height: 100vh;
@@ -5,7 +10,6 @@ body {
     background-position: center;
     background-size: cover;
     margin: 0;
-    font-family: "Georgia", serif;
 }
 
 /* Capa oscura suave */
@@ -239,15 +243,14 @@ p, h1, h2, h3, h4, img, ::placeholder, label {
 /* Columna izquierda */
 .login-left {
     width: 50%;
+    background-image: url('../../img/login/login.png');
+    background-size: cover;       
+    background-position: center;  
+    background-repeat: no-repeat;  
     display: flex;
     align-items: center;
     justify-content: center;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url("/static/img/login/login.png"); /* ruta absoluta */
 }
-
 
 
 .login-left img {

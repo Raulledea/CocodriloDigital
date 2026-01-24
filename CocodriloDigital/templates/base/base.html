@@ -10,9 +10,11 @@
     {% block head_extra %}{% endblock head_extra %}
 </head>
 <body>
-    {% block header%}{%endblock%}
     
-    {% include 'base/partials/nav.html' %}
+    {% block header %}
+       {% include 'base/partials/nav.html' %}
+    {% endblock header %}
+
 
     <main class="container mt-4">
         {% block content %}{% endblock content %}
