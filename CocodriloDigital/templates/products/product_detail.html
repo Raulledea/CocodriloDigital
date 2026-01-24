@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block head_extra %}
-  <link rel="stylesheet" href="{% static 'style/product.css' %}">
-  <link rel="stylesheet" href="{% static 'style/product_detail.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/product_card.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}">
 {% endblock head_extra %}
 
 {% block content %}
@@ -15,7 +15,7 @@
           {% if product.image and product.image.url %}
             <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="img-fluid">
           {% else %}
-            <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid">
+            <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid">
           {% endif %}
         </div>
       </div>

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head_extra %}
-  <link rel="stylesheet" href="{% static 'style/delete_promotion.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages/crud.css' %}">
 {% endblock head_extra %}
 
 {% block content %}
@@ -26,7 +26,7 @@
             {% if product.image and product.image.url %}
               <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="img-fluid rounded">
             {% else %}
-              <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid rounded">
+              <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid rounded">
             {% endif %}
           </div>
 

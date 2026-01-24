@@ -1,3 +1,7 @@
+/* ===============================
+   FORMULARIOS DE AGREGAR/EDITAR
+================================ */
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -7,8 +11,8 @@
 .form-container {
     background: linear-gradient(135deg, #9B67CB, #F38A7A);
     border-radius: 14px;
-    padding: 40px 30px; /* un poco más de padding */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); /* sombra más suave y elegante */
+    padding: 40px 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin: 30px auto;
     max-width: 700px;
@@ -16,14 +20,17 @@
 }
 
 .form-container h1 {
-    color: #000 !important; /* título blanco para mejor contraste */
+    color: #000 !important;
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 30px;
     text-align: center;
 }
 
-/* Inputs y textarea */
+/* Inputs, textarea y select */
+.product-form input,
+.product-form textarea,
+.product-form select,
 .category-form input,
 .category-form textarea,
 .category-form select {
@@ -35,6 +42,10 @@
     width: 100%;
 }
 
+/* Focus */
+.product-form input:focus,
+.product-form textarea:focus,
+.product-form select:focus,
 .category-form input:focus,
 .category-form textarea:focus,
 .category-form select:focus {
@@ -43,14 +54,40 @@
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
 }
 
+/* Checkbox */
+.product-form .form-check-input {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-color: #fff;
+}
+
+.product-form .form-check-input:checked {
+    background-color: #000;
+    border-color: #000;
+}
+
+/* Labels */
+.form-label,
+.form-check-label {
+    font-weight: 600;
+}
+
 /* Botones */
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
 .button-group .btn {
-    border-radius: 25px;  /* Misma curvatura para todos */
+    border-radius: 25px;
+    padding: 8px 22px;
+    font-weight: 600;
 }
 
 .button-group .btn-primary {
     background-color: #000;
     border-color: #000;
+    color: #fff;
 }
 
 .button-group .btn-primary:hover {
@@ -69,3 +106,16 @@
     border-color: #000;
 }
 
+@media (max-width: 768px) {
+    .form-container {
+        padding: 30px 15px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+}

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head_extra %}
-<link rel="stylesheet" href="{% static 'style/product.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=1">
 {% endblock head_extra %}
 
 {% block content %}
@@ -19,7 +19,7 @@
                             {% if product.image and product.image.url %}
                                 <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="product-image">
                             {% else %}
-                                <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen de {{ product.name }}" class="product-image">
+                                <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen de {{ product.name }}" class="product-image">
                             {% endif %}
 
                             {% if product.final_price < product.price %}
