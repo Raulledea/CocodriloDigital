@@ -1,1 +1,311 @@
+/* ===============================
+   BOTONES DE ACCIÓN RÁPIDA LADO A LADO CON GRADIENTE
+================================ */
+
+.mb-4 {
+    display: flex;           /* Coloca los botones en fila */
+    gap: 10px;               /* Espacio entre botones */
+    margin-bottom: 25px;
+}
+
+.mb-4 .btn {
+    background: linear-gradient(135deg, #9B67CB, #F38A7A);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    transition: background 0.25s ease, transform 0.2s ease;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    flex: 1;                 /* Ocupa la misma porción de espacio */
+    text-align: center;
+    text-decoration: none;
+}
+
+.mb-4 .btn:hover {
+    background: linear-gradient(135deg, #8b57b0, #e3726e); /* más oscuro al hover */
+    transform: translateY(-2px);
+}
+
+/* ===============================
+   CATEGORÍAS HORIZONTALES
+================================ */
+
+.categories-card {
+    border-radius: 14px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #9B67CB, #F38A7A);
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    transition: background 0.25s ease, transform 0.2s ease;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    flex: 1;                 /* Ocupa la misma porción de espacio */
+    text-align: center;
+    text-decoration: none;
+}
+
+.categories-card ul {
+    list-style: none;
+    display: flex;         /* pone las categorías en fila */
+    gap: 10px;             /* espacio entre cada categoría */
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;       /* se ajusta si hay muchas categorías */
+}
+
+.categories-card ul li {
+    margin: 0;             /* elimina margen vertical */
+}
+
+.categories-card ul li a {
+    display: block;
+    padding: 8px 15px;
+    color: #fff;           /* color del texto */
+    font-weight: 500;
+    border-radius: 25px;   /* estilo tipo “pill” */
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    white-space: nowrap;   /* evita que el texto se rompa */
+}
+
+.categories-card ul li a:hover {
+    background: #000;      /* fondo al pasar el mouse */
+    transform: translateY(-2px); /* pequeño levantamiento */
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+    .categories-card ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .categories-card ul li a {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+}
+
+/* ===============================
+   GRILLA DE PRODUCTOS
+================================ */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas iguales */
+    gap: 20px; /* espacio entre cards */
+    margin-bottom: 30px;
+}
+
+/* Responsive: menos columnas en pantallas pequeñas */
+@media (max-width: 1200px) {
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 por fila */
+    }
+}
+
+@media (max-width: 992px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 por fila */
+    }
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 por fila */
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr; /* 1 por fila en móviles */
+    }
+}
+
+/* ===============================
+   TARJETA DE PRODUCTO
+================================ */
+.product-card-link {
+    text-decoration: none; /* evita subrayado */
+}
+
+.product-detail-card {
+    width: 100%;
+    background: linear-gradient(135deg, #9B67CB, #F38A7A);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    min-height: 380px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+}
+
+.product-detail-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* ===============================
+   IMAGEN DE PRODUCTO
+================================ */
+.product-detail-image {
+    position: relative;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.product-detail-image img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.25s ease;
+}
+
+.product-detail-card:hover .product-detail-image img {
+    transform: scale(1.07);
+}
+
+/* ===============================
+   BADGE DE OFERTA
+================================ */
+.discount-badge-detail {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    z-index: 10;
+}
+
+/* ===============================
+   CUERPO DE LA CARD
+================================ */
+.product-detail-info {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: #000;
+}
+
+/* NOMBRE DEL PRODUCTO */
+.product-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    height: calc(1.2em * 2); /* 2 líneas */
+    margin-bottom: 6px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-family: inherit;
+}
+
+/* DESCRIPCIÓN DEL PRODUCTO */
+.product-description p {
+    font-size: 13px;
+    line-height: 1.4;
+    height: calc(1.4em * 3); /* 3 líneas */
+    max-width: 30ch;
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-family: inherit;
+}
+
+/* ===============================
+   PRECIOS
+================================ */
+.price-section {
+    margin-top: auto;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.original-price-detail {
+    font-size: 13px;
+    text-decoration: line-through;
+    color: #333;
+}
+
+.discounted-price-detail {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+}
+
+.final-price-detail {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+}
+
+/* ===============================
+   BOTÓN DE COMPRA NEGRO CON TEXTO BLANCO
+================================ */
+.product-detail-card .btn {
+    background-color: #000;        /* fondo negro */
+    color: #fff;                   /* texto blanco */
+    border: none;                  /* sin borde */
+    border-radius: 25px;           /* bordes redondeados tipo “pill” */
+    padding: 10px;                 /* espacio interno */
+    font-size: 14px;               /* tamaño de letra */
+    font-weight: 600;              /* negrita */
+    width: 100%;                   /* ocupa todo el ancho de la card */
+    text-align: center;            /* centra el texto */
+    font-family: inherit;          /* hereda la fuente de la card */
+    cursor: pointer;               /* cursor puntero al pasar el mouse */
+    transition: background-color 0.25s ease, transform 0.2s ease; /* animación */
+}
+
+.product-detail-card .btn:hover {
+    background-color: #222;        /* negro más oscuro al pasar el mouse */
+    transform: translateY(-2px);   /* pequeño levantamiento */
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+    .product-detail-card {
+        min-height: 320px;
+    }
+
+    .product-title {
+        font-size: 14px;
+    }
+
+    .product-description p {
+        font-size: 12px;
+    }
+
+    .price-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
 

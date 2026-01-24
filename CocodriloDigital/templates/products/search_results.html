@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+<!-- Si quieres puedes agregar CSS adicional solo para esta página -->
+<link rel="stylesheet" href="{% static 'style/products/product.css' %}?v=1">
+{% endblock head_extra %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Resultados para "{{ query }}"</h2>
+
+    {% if products_with_discount %}
+    <div class="products-grid">
+        {% for product, discount in products_with_discount %}
+        <a href="{% url 'product_detail' product.id %}" class="product-card-link">
+            <div class="product-card">
+                <!-- Imagen y badge de descuento -->
+                <div class="img-center">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                        <img src="{% static 'img/no-image.png' %}" alt="Sin imagen" class="product-image">
+                    {% endif %}
+                    {% if discount > 0 %}
+                        <span class="discount-badge">{{ discount }}% OFF</span>
+                    {% endif %}
+                </div>
+
+                <!-- Cuerpo de la tarjeta -->
+                <div class="product-card-body">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <p class="product-desc">{{ product.description }}</p>
+
+                    <div class="price-row">
+                        {% if discount > 0 %}
+                            <span class="original-price">${{ product.price }}</span>
+                            <span class="discounted-price">${{ product.final_price }}</span>
+                        {% else %}
+                            <span class="discounted-price">${{ product.price }}</span>
+                        {% endif %}
+                    </div>
+
+                    <button class="btn">Ver detalle</button>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>No se encontraron productos relacionados.</p>
+    {% endif %}
+</div>
+{% endblock content %}

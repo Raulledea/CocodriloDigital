@@ -250,3 +250,33 @@ def delete_promotion(request, product_id, promotion_id):
         'promotion': promotion,
     }
     return render(request, 'products/delete_promotion.html', context)
+
+
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Product
+
+def search_results(request):
+    query = request.GET.get('q', '')
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query)
+        )
+    else:
+        products = Product.objects.none()
+
+    # Calculamos el porcentaje de descuento por producto
+    products_with_discount = []
+    for p in products:
+        if p.final_price < p.price and p.price > 0:
+            discount_percent = int((p.price - p.final_price) / p.price * 100)
+        else:
+            discount_percent = 0
+        products_with_discount.append((p, discount_percent))
+
+    return render(request, 'products/search_results.html', {
+        'query': query,
+        'products_with_discount': products_with_discount
+    })
