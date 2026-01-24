@@ -1,81 +1,71 @@
-/* ===============================
-   FORMULARIO DE CATEGORÍA
-================================ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
 .form-container {
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #f8f9fa;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #9B67CB, #F38A7A);
+    border-radius: 14px;
+    padding: 40px 30px; /* un poco más de padding */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); /* sombra más suave y elegante */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 30px auto;
+    max-width: 700px;
+    color: #fff;
 }
 
 .form-container h1 {
-  color: #333;
-  margin-bottom: 25px;
-  font-size: 24px;
-  text-align: center;
+    color: #000 !important; /* título blanco para mejor contraste */
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
-.category-form .form-label {
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.category-form .form-control,
+/* Inputs y textarea */
+.category-form input,
+.category-form textarea,
 .category-form select {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 8px 12px;
-  width: 100%;
-  font-size: 14px;
-}
-
-.category-form .form-control:focus,
-.category-form select:focus {
-  border-color: #0d6efd;
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
-
-.category-form textarea.form-control {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 25px;
-}
-
-.button-group .btn {
-  padding: 10px 25px;
-  font-weight: 500;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.button-group .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-@media (max-width: 768px) {
-  .form-container {
-    padding: 20px;
-  }
-
-  .button-group {
-    flex-direction: column;
-  }
-
-  .button-group .btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
     width: 100%;
-  }
 }
+
+.category-form input:focus,
+.category-form textarea:focus,
+.category-form select:focus {
+    outline: none;
+    border-color: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+/* Botones */
+.button-group .btn {
+    border-radius: 25px;  /* Misma curvatura para todos */
+}
+
+.button-group .btn-primary {
+    background-color: #000;
+    border-color: #000;
+}
+
+.button-group .btn-primary:hover {
+    background-color: #000;
+    border-color: #000;
+}
+
+.button-group .btn-secondary {
+    background-color: #fff;
+    border-color: #000;
+    color: #000;
+}
+
+.button-group .btn-secondary:hover {
+    background-color: #f2f2f2;
+    border-color: #000;
+}
+
