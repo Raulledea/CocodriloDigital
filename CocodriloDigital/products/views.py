@@ -346,3 +346,31 @@ def remove_from_carrito(request, product_id):
         messages.success(request, 'Producto eliminado del carrito.')
 
     return redirect('carrito')
+
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def recibo_view(request):
+    carrito = request.session.get('carrito', {})
+    carrito_items = []
+    total = 0
+
+    for item in carrito.values():
+        subtotal = item['price'] * item['quantity']
+        total += subtotal
+        carrito_items.append({
+            'product': item,
+            'quantity': item['quantity'],
+            'subtotal': subtotal
+        })
+
+    context = {
+        'carrito_items': carrito_items,
+        'total': total,
+        'fecha': datetime.now().strftime('%d/%m/%Y %H:%M'),
+        'recibo_id': f"RC-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    }
+
+    return render(request, 'products/recibo.html', context)
