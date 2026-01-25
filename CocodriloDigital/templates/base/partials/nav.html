@@ -3,7 +3,7 @@
         <!-- IZQUIERDA: Brand + Links principales -->
         <div class="d-flex align-items-center">
             <a class="navbar-brand me-3" href="{% url 'home' %}">
-                <img src="/static/img/logo.png" alt="CocodriloDigital" height="50">
+                <img src="/static/images/logo.png" alt="CocodriloDigital" height="50">
             </a>
             <ul class="navbar-nav d-flex flex-row align-items-center gap-2 mb-0">
                 <li class="nav-item">
@@ -13,7 +13,7 @@
                     <a class="nav-link" href="{% url 'list_products' %}">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Carrito</a>
+                    <a class="nav-link" href="{% url 'carrito' %}">Carrito</a>
                 </li>
             </ul>
         </div>

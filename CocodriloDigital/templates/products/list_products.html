@@ -2,58 +2,61 @@
 {% load static %}
 
 {% block head_extra %}
-<link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=4">
+<link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}?v=4">
 {% endblock head_extra %}
 
 {% block content %}
-  <h1>Productos por categoría</h1>
+<h1>Productos por categoría</h1>
 
-  {% for category in categories %}
-    <section class="category-section mb-4">
-      <div class="category-header">
-        <h2><a href="{% url 'category_detail' category.id %}" class="category-link">{{ category.name }}</a></h2>
-        {% if category.description %}
-          <p class="text-muted">{{ category.description }}</p>
-        {% endif %}
-      </div>
+{% for category in categories %}
+  <section class="category-section mb-4">
+    <div class="category-header">
+      <h2>
+        <a href="{% url 'category_detail' category.id %}" class="category-link">{{ category.name }}</a>
+      </h2>
+      {% if category.description %}
+        <p class="text-muted">{{ category.description }}</p>
+      {% endif %}
+    </div>
 
-      <div class="products-grid">
-        {% for product in category.products.all %}
-          <a href="{% url 'product_detail' product.id %}" class="product-card-link">
-            <article class="product-card">
-              <div class="img-center">
-                {% if product.image and product.image.url %}
-                  <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="product-image">
-                {% else %}
-                  <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen por defecto" class="product-image">
-                {% endif %}
+    <div class="products-grid">
+      {% for product in category.products.all %}
+        <a href="{% url 'product_detail' product.id %}" class="product-card-link">
+          <article class="product-card">
+
+            <div class="img-center">
+              {% if product.image and product.image.url %}
+                <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="product-image">
+              {% else %}
+                <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen por defecto" class="product-image">
+              {% endif %}
+              {% if product.final_price < product.price %}
+                <div class="discount-badge">Oferta</div>
+              {% endif %}
+            </div>
+
+            <div class="product-card-body">
+              <h3 class="product-name">{{ product.name }}</h3>
+              <p class="product-desc">{{ product.description|default:""|truncatechars:100 }}</p>
+              <div class="price-row">
                 {% if product.final_price < product.price %}
-                  <div class="discount-badge">Oferta</div>
+                  <span class="original-price">${{ product.price }}</span>
+                  <span class="discounted-price">${{ product.final_price }}</span>
+                {% else %}
+                  <span class="discounted-price">${{ product.price }}</span>
                 {% endif %}
               </div>
 
-              <div class="product-card-body">
-                <h3 class="product-name">{{ product.name }}</h3>
-                <p class="product-desc">{{ product.description|default:""|truncatechars:100 }}</p>
-                <div class="price-row">
-                  {% if product.final_price < product.price %}
-                    <span class="original-price">${{ product.price }}</span>
-                    <span class="discounted-price">${{ product.final_price }}</span>
-                  {% else %}
-                    <span class="discounted-price">${{ product.price }}</span>
-                  {% endif %}
-                </div>
-              </div>
-
-            </article>
-          </a>
-        {% empty %}
-          <p>No hay productos en esta categoría.</p>
-        {% endfor %}
-      </div>
-    </section>
-  {% empty %}
-    <p>No hay categorías con productos.</p>
-  {% endfor %}
-
+            </div>
+          </article>
+        </a>
+      {% empty %}
+        <p>No hay productos en esta categoría.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% empty %}
+  <p>No hay categorías con productos.</p>
+{% endfor %}
 {% endblock content %}

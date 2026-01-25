@@ -2,123 +2,130 @@
 {% load static %}
 
 {% block head_extra %}
-  <link rel="stylesheet" href="{% static 'css/components/product_card.css' %}">
-  <link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=4">
+  <link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}?v=4">
+
 {% endblock head_extra %}
 
 {% block content %}
-  <div class="container mt-5">
-    <div class="row">
-      <!-- Imagen del producto -->
-      <div class="col-md-6 mb-4">
-        <div class="product-detail-image">
-          {% if product.image and product.image.url %}
-            <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="img-fluid">
-          {% else %}
-            <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid">
-          {% endif %}
-        </div>
-      </div>
+<div class="container mt-5">
+  <!-- CARD COMPLETA DEL PRODUCTO -->
+  <div class="product-detail-card">
 
-      <!-- Información del producto -->
-      <div class="col-md-6">
-        <div class="product-detail-info">
-          <!-- Nombre del producto -->
-          <h1 class="product-title">{{ product.name }}</h1>
-
-          <!-- Categoría -->
-          {% if product.category %}
-            <p class="text-muted">
-              <strong>Categoría:</strong> 
-              <a href="{% url 'category_detail' product.category.id %}">{{ product.category.name }}</a>
-            </p>
-          {% else %}
-            <p class="text-muted">
-              <strong>Categoría:</strong> 
-              <span class="badge bg-warning">Sin categoría</span>
-            </p>
-          {% endif %}
-
-          <!-- Descripción -->
-          {% if product.description %}
-            <div class="product-description mb-4">
-              <h4>Descripción</h4>
-              <p>{{ product.description }}</p>
-            </div>
-          {% endif %}
-
-          <!-- Stock -->
-          <p class="mb-3">
-            <strong>Stock disponible:</strong> 
-            <span class="{% if product.stock > 0 %}text-success{% else %}text-danger{% endif %}">
-              {% if product.stock > 0 %}
-                {{ product.stock }} unidades
-              {% else %}
-                Sin stock
-              {% endif %}
-            </span>
-          </p>
-
-          <!-- Precios -->
-          <div class="price-section mb-4">
-            {% if product.final_price < product.price %}
-              <div class="discount-badge-detail">Oferta</div>
-              <p class="original-price-detail">${{ product.price }}</p>
-              <p class="discounted-price-detail">${{ product.final_price }}</p>
-            {% else %}
-              <p class="final-price-detail">${{ product.price }}</p>
-            {% endif %}
-          </div>
-
-          <!-- Detalles de la Oferta -->
-          {% with active_promotion=product.promotions.all|first %}
-            {% if active_promotion %}
-              <div class="promotion-section mb-4">
-                <h4>Detalles de la Oferta</h4>
-                <div class="promotion-info">
-                  <p><strong>Descuento:</strong> {{ active_promotion.discount_percent }}%</p>
-                  <p><strong>Desde:</strong> {{ active_promotion.start_date|date:"d/m/Y H:i" }}</p>
-                  <p><strong>Hasta:</strong> {{ active_promotion.end_date|date:"d/m/Y H:i" }}</p>
-                  {% if active_promotion.is_active %}
-                    <span class="badge bg-success">Oferta Activa</span>
-                  {% else %}
-                    <span class="badge bg-danger">Oferta Inactiva</span>
-                  {% endif %}
-                </div>
-                <div class="promotion-buttons mt-3">
-                  <a href="{% url 'promotion_detail' product.id active_promotion.id %}" class="btn btn-info btn-sm">
-                    <i class="fas fa-eye"></i> Ver Detalles
-                  </a>
-                </div>
-              </div>
-            {% else %}
-              <div class="no-promotion mb-4">
-                <p class="text-muted">Este producto no tiene ofertas activas.</p>
-                {% if user.is_superuser %}
-                  <a href="{% url 'create_promotion' product.id %}" class="btn btn-success">
-                    <i class="fas fa-plus"></i> Crear Oferta
-                  </a>
-                {% endif %}
-              </div>
-            {% endif %}
-          {% endwith %}
-
-          <!-- Botones de acción -->
-          <div class="action-buttons">
-            {% if user.is_superuser %}
-              <a href="{% url 'edit_product' product.id %}" class="btn btn-warning me-2">
-                <i class="fas fa-edit"></i> Modificar Producto
-              </a>
-              <a href="{% url 'delete_product' product.id %}" class="btn btn-danger me-2">
-                <i class="fas fa-trash"></i> Eliminar Producto
-              </a>
-            {% endif %}
-            <a href="{% url 'list_products' %}" class="btn btn-secondary">
-              <i class="fas fa-arrow-left"></i> Volver a la Lista
-            </a>
-          </div>
-        </div>
-      </div>
+    <!-- IZQUIERDA: Imagen del producto -->
+    <div class="product-detail-image">
+      {% if product.image and product.image.url %}
+        <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="img-fluid">
+      {% else %}
+        <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid">
+      {% endif %}
     </div>
-  </div>
+
+    <!-- DERECHA: Información del producto -->
+    <div class="product-detail-info">
+      <!-- Nombre del producto -->
+      <h1 class="product-title">{{ product.name }}</h1>
+
+      <!-- Categoría -->
+      {% if product.category %}
+        <p class="text-muted">
+          <strong>Categoría:</strong> 
+          <a href="{% url 'category_detail' product.category.id %}" class="category-link">{{ product.category.name }}</a>
+        </p>
+      {% else %}
+        <p class="text-muted">
+          <strong>Categoría:</strong> 
+          <span class="badge bg-warning">Sin categoría</span>
+        </p>
+      {% endif %}
+
+      <!-- Descripción -->
+      {% if product.description %}
+        <div class="product-description mb-4">
+          <h4>Descripción</h4>
+          <p>{{ product.description }}</p>
+        </div>
+      {% endif %}
+
+      <!-- Stock -->
+      <p class="mb-3">
+        <strong>Stock disponible:</strong> 
+        <span class="{% if product.stock > 0 %}text-success{% else %}text-danger{% endif %}">
+          {% if product.stock > 0 %}
+            {{ product.stock }} unidades
+          {% else %}
+            Sin stock
+          {% endif %}
+        </span>
+      </p>
+
+      <!-- Precios -->
+      <div class="price-section mb-4">
+        {% if product.final_price < product.price %}
+          <div class="discount-badge-detail">Oferta</div>
+          <p class="original-price-detail">${{ product.price }}</p>
+          <p class="discounted-price-detail">${{ product.final_price }}</p>
+        {% else %}
+          <p class="final-price-detail">${{ product.price }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Detalles de la Oferta -->
+      {% with active_promotion=product.promotions.all|first %}
+        {% if active_promotion %}
+          <div class="promotion-section mb-4">
+            <h4>Detalles de la Oferta</h4>
+            <div class="promotion-info">
+              <p><strong>Descuento:</strong> {{ active_promotion.discount_percent }}%</p>
+              <p><strong>Desde:</strong> {{ active_promotion.start_date|date:"d/m/Y H:i" }}</p>
+              <p><strong>Hasta:</strong> {{ active_promotion.end_date|date:"d/m/Y H:i" }}</p>
+              {% if active_promotion.is_active %}
+                <span class="badge bg-success">Oferta Activa</span>
+              {% else %}
+                <span class="badge bg-danger">Oferta Inactiva</span>
+              {% endif %}
+            </div>
+            <div class="promotion-buttons mt-3">
+              <a href="{% url 'promotion_detail' product.id active_promotion.id %}" class="btn btn-black btn-sm">
+                <i class="fas fa-eye"></i> Ver Detalles
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <div class="no-promotion mb-4">
+            <p>Este producto no tiene ofertas activas.</p>
+            {% if user.is_superuser %}
+              <a href="{% url 'create_promotion' product.id %}" class="btn btn-black">
+                <i class="fas fa-plus"></i> Crear Oferta
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <!-- Formulario de carrito -->
+      <form method="post" action="{% url 'add_to_carrito' product.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn mt-2">Agregar al carrito</button>
+      </form>
+
+      <!-- Botones de acción -->
+      <div class="action-buttons mt-3">
+        {% if user.is_superuser %}
+          <a href="{% url 'edit_product' product.id %}" class="btn btn-black me-2">
+            <i class="fas fa-edit"></i> Modificar 
+          </a>
+          <a href="{% url 'delete_product' product.id %}" class="btn btn-black me-2">
+            <i class="fas fa-trash"></i> Eliminar 
+          </a>
+        {% endif %}
+        <a href="{% url 'list_products' %}" class="btn btn-black">
+          <i class="fas fa-arrow-left"></i> Atras
+        </a>
+      </div>
+
+    </div> <!-- End product-detail-info -->
+
+  </div> <!-- End product-detail-card -->
+</div>
 {% endblock content %}

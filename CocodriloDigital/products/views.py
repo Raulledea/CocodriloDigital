@@ -56,23 +56,21 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', context)
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
+from .forms import ProductForm
+from .models import Product
+
 @superuser_required()
 @require_http_methods(["GET", "POST"])
 def add_product(request):
-    """Vista para añadir un nuevo producto.
-    
-    GET: Muestra formulario vacío de creación de producto.
-    POST: Procesa el formulario y guarda el producto si es válido.
-    
-    Returns:
-        HttpResponse: Formulario o redirección a list_products tras crear.
-    """
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save()
             messages.success(request, f'Producto "{product.name}" creado exitosamente.')
-            return redirect('list_products')
+            return redirect('products:list_products')
         else:
             messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
@@ -280,3 +278,97 @@ def delete_promotion(request, product_id, promotion_id):
         'promotion': promotion,
     }
     return render(request, 'products/delete_promotion.html', context)
+
+
+@require_http_methods(["GET"])
+def carrito_view(request):
+    """
+    Vista para mostrar el carrito de compras.
+
+    GET: Muestra los productos almacenados en la sesión.
+    """
+    carrito = request.session.get('carrito', {})
+
+    total = 0
+    for item in carrito.values():
+        total += item['price'] * item['quantity']
+
+    context = {
+        'carrito': carrito,
+        'total': total,
+    }
+
+    return render(request, 'products/carrito.html', context)
+
+
+@require_http_methods(["POST"])
+def add_to_carrito(request, product_id):
+    """
+    POST: Agrega un producto al carrito usando sesión.
+    """
+    product = get_object_or_404(Product, pk=product_id)
+
+    carrito = request.session.get('carrito', {})
+
+    product_id_str = str(product.id)
+
+    if product_id_str in carrito:
+        carrito[product_id_str]['quantity'] += 1
+    else:
+        carrito[product_id_str] = {
+            'name': product.name,
+            'price': float(product.final_price if hasattr(product, 'final_price') else product.price),
+            'quantity': 1,
+            'image': product.image.url if product.image else '',
+        }
+
+    request.session['carrito'] = carrito
+    request.session.modified = True
+
+    messages.success(request, 'Producto añadido al carrito.')
+    return redirect('carrito')
+
+
+@require_http_methods(["POST"])
+def remove_from_carrito(request, product_id):
+    """
+    POST: Elimina un producto del carrito.
+    """
+    carrito = request.session.get('carrito', {})
+    product_id_str = str(product_id)
+
+    if product_id_str in carrito:
+        del carrito[product_id_str]
+        request.session['carrito'] = carrito
+        request.session.modified = True
+        messages.success(request, 'Producto eliminado del carrito.')
+
+    return redirect('carrito')
+
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def recibo_view(request):
+    carrito = request.session.get('carrito', {})
+    carrito_items = []
+    total = 0
+
+    for item in carrito.values():
+        subtotal = item['price'] * item['quantity']
+        total += subtotal
+        carrito_items.append({
+            'product': item,
+            'quantity': item['quantity'],
+            'subtotal': subtotal
+        })
+
+    context = {
+        'carrito_items': carrito_items,
+        'total': total,
+        'fecha': datetime.now().strftime('%d/%m/%Y %H:%M'),
+        'recibo_id': f"RC-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    }
+
+    return render(request, 'products/recibo.html', context)
