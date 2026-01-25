@@ -103,6 +103,11 @@
             {% endif %}
           {% endwith %}
 
+          <form method="post" action="{% url 'add_to_carrito' product.id %}">
+            {% csrf_token %}
+               <button type="submit">Agregar al carrito</button>
+          </form>
+
           <!-- Botones de acción -->
           <div class="action-buttons">
             {% if user.is_superuser %}
