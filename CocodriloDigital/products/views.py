@@ -56,23 +56,21 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', context)
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
+from .forms import ProductForm
+from .models import Product
+
 @superuser_required()
 @require_http_methods(["GET", "POST"])
 def add_product(request):
-    """Vista para añadir un nuevo producto.
-    
-    GET: Muestra formulario vacío de creación de producto.
-    POST: Procesa el formulario y guarda el producto si es válido.
-    
-    Returns:
-        HttpResponse: Formulario o redirección a list_products tras crear.
-    """
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save()
             messages.success(request, f'Producto "{product.name}" creado exitosamente.')
-            return redirect('list_products')
+            return redirect('products:list_products')
         else:
             messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
