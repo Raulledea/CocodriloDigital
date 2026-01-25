@@ -1,200 +1,163 @@
-/* ===============================
-   DETALLE DE PRODUCTO
-================================ */
+/* CARD COMPLETA */
+.product-detail-card {
+  display: flex;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, #9B67CB, #F38A7A);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  overflow: hidden;
+  padding: 20px;
+  margin-bottom: 40px;
+  color: #000; /* todo el texto negro */
+  font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+}
 
+.product-detail-card a {
+  color: #9B67CB; /* enlaces de categoría siguen el color morado */
+  text-decoration: none;
+}
+
+.product-detail-card a:hover {
+  text-decoration: underline;
+}
+
+/* IZQUIERDA: Imagen */
 .product-detail-image {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  background-color: #f8f9fa;
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 14px;
 }
 
 .product-detail-image img {
   max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+  border-radius: 14px;
+  transition: transform 0.25s ease;
 }
 
+.product-detail-image:hover img {
+  transform: scale(1.05);
+}
+
+/* DERECHA: Información */
 .product-detail-info {
-  padding-left: 20px;
+  flex: 1 1 50%;
+  padding: 20px;
 }
 
-.product-title {
-  color: #333;
-  margin-bottom: 10px;
-  font-size: 28px;
-  font-weight: bold;
+/* Texto negro */
+.product-detail-info p,
+.product-detail-info h1,
+.product-detail-info h4,
+.product-detail-info span,
+.product-detail-info strong {
+  color: #000;
 }
 
-.product-description {
-  background-color: #f8f9fa;
-  padding: 15px;
-  border-radius: 8px;
-  border-left: 4px solid #007bff;
+/* Botones negros sin borde */
+.btn {
+  background: #9B67CB;
+  color: #000 !important;
+  border: none !important;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all 0.25s ease;
 }
 
-.product-description h4 {
-  margin-top: 0;
-  color: #495057;
+.btn:hover {
+  background-color: #fff !important;
+  transform: translateY(-2px);
 }
 
+/* Precios */
 .price-section {
-  background-color: #fff3cd;
+  background-color: rgba(255,255,255,0.2);
   padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #ffc107;
+  border-radius: 14px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.discount-badge-detail {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #dc3545;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
 }
 
 .original-price-detail {
   text-decoration: line-through;
-  color: #999;
-  margin: 0;
+  color: #000;
   font-size: 18px;
+  margin: 0;
 }
 
-.discounted-price-detail {
-  color: #d9534f;
-  font-size: 32px;
-  font-weight: bold;
+.discounted-price-detail,
+.final-price-detail {
+  color: #000;
+  font-size: 24px;
+  font-weight: 700;
   margin: 5px 0 0 0;
 }
 
-.final-price-detail {
-  color: #5cb85c;
-  font-size: 32px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.discount-badge-detail {
-  display: inline-block;
-  background-color: #d9534f;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* ===============================
-   SECCIÓN DE PROMOCIONES
-================================ */
-
+/* Promociones */
 .promotion-section {
-  background-color: #fff3cd;
+  background-color: rgba(255,255,255,0.2);
   padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #ffc107;
-  border-left: 4px solid #ff9800;
+  border-radius: 14px;
+  border-left: 4px solid #F38A7A;
+  margin-bottom: 20px;
 }
 
 .promotion-section h4 {
-  color: #333;
   margin-bottom: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .promotion-info {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.4);
   padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 12px;
-}
-
-.promotion-info p {
-  margin-bottom: 8px;
-  color: #555;
-  font-size: 14px;
-}
-
-.promotion-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.promotion-buttons .btn {
-  padding: 8px 15px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.promotion-buttons .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Sección sin promoción */
-.no-promotion {
-  background-color: #f8f9fa;
-  padding: 15px;
   border-radius: 8px;
-  border: 1px solid #ddd;
-  border-left: 4px solid #6c757d;
+  margin-bottom: 12px;
+  color: #000;
+}
+
+.no-promotion {
+  background-color: rgba(255,255,255,0.2);
+  padding: 15px;
+  border-radius: 14px;
+  border-left: 4px solid #fff;
+  margin-bottom: 20px;
   text-align: center;
 }
 
-.no-promotion p {
-  margin: 0 0 15px 0;
-  color: #666;
-}
-
-.no-promotion .btn {
-  padding: 8px 25px;
-  transition: all 0.3s ease;
-}
-
-.no-promotion .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
+/* Acción botones */
 .action-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
 }
 
 .action-buttons .btn {
-  flex: 1;
-  min-width: 150px;
-  padding: 10px 15px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  flex:1;
+  min-width:150px;
 }
 
-.action-buttons .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.btn-warning:hover {
-  background-color: #ec971f;
-  border-color: #d58512;
-}
-
-.btn-danger:hover {
-  background-color: #c9302c;
-  border-color: #ac2925;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
-  border-color: #4e555b;
-}
-
-@media (max-width: 768px) {
-  .product-detail-info {
-    padding-left: 0;
-    margin-top: 20px;
-  }
-
-  .action-buttons {
+@media (max-width:992px) {
+  .product-detail-card {
     flex-direction: column;
   }
-
-  .action-buttons .btn {
-    min-width: 100%;
+  .product-detail-image, .product-detail-info {
+    flex:1 1 100%;
+    padding:10px 0;
   }
 }

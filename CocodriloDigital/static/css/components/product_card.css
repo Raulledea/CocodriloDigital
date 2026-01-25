@@ -44,7 +44,7 @@
 }
 
 /* ===============================
-   TARJETA
+   TARJETA DE PRODUCTO
 ================================ */
 .product-card {
     width: 100%;
@@ -126,7 +126,7 @@
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    font-family: inherit;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
 }
 
 /* DESCRIPCIÓN PRODUCTO - 3 LÍNEAS */
@@ -182,20 +182,49 @@
 }
 
 /* ===============================
-   ESTILOS PARA CATEGORÍA EN LIST_PRODUCTS
+   SECCIÓN Y CARD DE CATEGORÍA
 ================================ */
-.category-header {
-    margin-bottom: 20px;
+.category-section {
+    width: 100%;
+    margin-bottom: 40px;
 }
 
+.category-header {
+    background: linear-gradient(135deg, #9B67CB, #F38A7A); /* igual que tus productos */
+    padding: 20px 24px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    color: #fff;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.category-header:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.category-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.category-header p.text-muted {
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.85) !important; /* fuerza color sobre Bootstrap */
+}
+
+/* Enlace de categoría */
 .category-link {
     text-decoration: none;
-    color: #9B67CB;
+    color: #fff;
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
 .category-link:hover {
-    color: #F38A7A;
+    color: #fefefe;
     text-decoration: underline;
 }
