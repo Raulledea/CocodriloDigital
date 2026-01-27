@@ -1,0 +1,31 @@
+/* Category Section Links */
+.category-section-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.category-section-link:hover {
+    text-decoration: none;
+    color: inherit;
+    transform: translateY(-2px);
+}
+
+.category-section-link:hover .category-section {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.category-section {
+    padding: 20px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+/* Prevent product card clicks from bubbling up to category link */
+.product-card-link {
+    position: relative;
+    z-index: 10;
+}

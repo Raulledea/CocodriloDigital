@@ -2,61 +2,99 @@
 {% load static %}
 
 {% block head_extra %}
-<link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=4">
-<link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}?v=4">
+<link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/components/category_card.css' %}?v=1">
 {% endblock head_extra %}
 
 {% block content %}
-<h1>Productos por categoría</h1>
+<!-- Products Header -->
+<div class="products-header">
+    <div class="container">
+        <h1 class="products-title">Nuestros Productos</h1>
+        <p class="products-subtitle">Explora nuestra completa selección de productos digitales</p>
+    </div>
+</div>
 
+<div class="container">
 {% for category in categories %}
-  <section class="category-section mb-4">
-    <div class="category-header">
-      <h2>
-        <a href="{% url 'category:category_detail' category.id %}" class="category-link">{{ category.name }}</a>
-      </h2>
-      {% if category.description %}
-        <p class="text-muted">{{ category.description }}</p>
-      {% endif %}
-    </div>
+  <section class="category-section">
+    <a href="{% url 'category:category_detail' category.id %}" class="category-section-link">
+      <div class="category-header">
+        <div>
+          <h2 class="category-title">
+            {{ category.name }}
+          </h2>
+          {% if category.description %}
+            <p class="category-description">{{ category.description }}</p>
+          {% endif %}
+        </div>
+      </div>
 
-    <div class="products-grid">
-      {% for product in category.products.all %}
-        <a href="{% url 'products:product_detail' product.id %}" class="product-card-link">
-          <article class="product-card">
+      <div class="products-grid">
+        {% for product in category.products.all %}
+          <a href="{% url 'products:product_detail' product.id %}" class="product-card-link">
+            <article class="product-card">
+              <div class="h-100">
+                
+                <!-- Imagen -->
+                <div class="img-center">
+                  {% if product.image and product.image.url %}
+                    <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="product-image">
+                  {% else %}
+                    <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen por defecto" class="product-image">
+                  {% endif %}
+                  
+                  {% if product.final_price < product.price %}
+                    <div class="discount-badge">Oferta</div>
+                  {% endif %}
+                </div>
 
-            <div class="img-center">
-              {% if product.image and product.image.url %}
-                <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="product-image">
-              {% else %}
-                <img src="{% static 'img/default/default01.jpg' %}" alt="Imagen por defecto" class="product-image">
-              {% endif %}
-              {% if product.final_price < product.price %}
-                <div class="discount-badge">Oferta</div>
-              {% endif %}
-            </div>
+                <!-- Contenido -->
+                <div class="product-card-body">
+                  <h3 class="product-name">{{ product.name }}</h3>
+                  
+                  <p class="product-desc">{{ product.description|default:""|truncatechars:100 }}</p>
+                  
+                  <!-- Precios -->
+                  <div class="price-row">
+                    {% if product.final_price < product.price %}
+                      <span class="original-price">${{ product.price }}</span>
+                      <span class="discounted-price">${{ product.final_price }}</span>
+                    {% else %}
+                      <span class="discounted-price">${{ product.price }}</span>
+                    {% endif %}
+                  </div>
+                  
+                  <!-- Botón -->
+                  <form method="post" action="{% url 'cart:add_to_carrito' product.id %}" onclick="event.stopPropagation()" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn w-100 mt-3 add-to-cart-btn" data-product-id="{{ product.id }}">
+                      <i class="fas fa-shopping-cart me-1"></i>Agregar al carrito
+                    </button>
+                  </form>
+                </div>
 
-            <div class="product-card-body">
-              <h3 class="product-name">{{ product.name }}</h3>
-              <p class="product-desc">{{ product.description|default:""|truncatechars:100 }}</p>
-              <div class="price-row">
-                {% if product.final_price < product.price %}
-                  <span class="original-price">${{ product.price }}</span>
-                  <span class="discounted-price">${{ product.final_price }}</span>
-                {% else %}
-                  <span class="discounted-price">${{ product.price }}</span>
-                {% endif %}
               </div>
-
+            </article>
+          </a>
+        {% empty %}
+          <div class="col-12">
+            <div class="alert alert-info text-center">
+              <p class="mb-0">No hay productos en esta categoría.</p>
             </div>
-          </article>
-        </a>
-      {% empty %}
-        <p>No hay productos en esta categoría.</p>
-      {% endfor %}
-    </div>
+          </div>
+        {% endfor %}
+      </div>
+    </a>
   </section>
 {% empty %}
-  <p>No hay categorías con productos.</p>
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <i class="fas fa-inbox"></i>
+    </div>
+    <h3 class="empty-state-title">No hay categorías disponibles</h3>
+    <p class="empty-state-text">Estamos trabajando para agregar nuevos productos</p>
+  </div>
 {% endfor %}
+</div>
 {% endblock content %}

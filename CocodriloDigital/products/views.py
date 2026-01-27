@@ -6,6 +6,7 @@ y validaciones de permisos.
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
+from django.db import models
 from decimal import Decimal
 from .forms import ProductForm, PromotionForm
 from .models import Product, Promotion
@@ -101,7 +102,7 @@ def edit_product(request, product_id):
         if form.is_valid():
             product = form.save()
             messages.success(request, f'Producto "{product.name}" actualizado exitosamente.')
-            return redirect('product_detail', product_id=product.id)
+            return redirect('products:product_detail', product_id=product.id)
         else:
             messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
@@ -166,7 +167,7 @@ def create_promotion(request, product_id):
             promotion.product = product
             promotion.save()
             messages.success(request, f'Promoción creada exitosamente para "{product.name}".')
-            return redirect('promotion_detail', product_id=product.id, promotion_id=promotion.id)
+            return redirect('products:promotion_detail', product_id=product.id, promotion_id=promotion.id)
         else:
             messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
@@ -234,7 +235,7 @@ def edit_promotion(request, product_id, promotion_id):
         if form.is_valid():
             promotion = form.save()
             messages.success(request, 'Promoción actualizada exitosamente.')
-            return redirect('promotion_detail', product_id=product.id, promotion_id=promotion.id)
+            return redirect('products:promotion_detail', product_id=product.id, promotion_id=promotion.id)
         else:
             messages.error(request, 'Hubo errores en el formulario. Verifica los datos.')
     else:
@@ -271,12 +272,51 @@ def delete_promotion(request, product_id, promotion_id):
     if request.method == "POST":
         promotion.delete()
         messages.success(request, 'Promoción eliminada exitosamente.')
-        return redirect('product_detail', product_id=product.id)
+        return redirect('products:product_detail', product_id=product.id)
     
     context = {
         'product': product,
         'promotion': promotion,
     }
     return render(request, 'products/delete_promotion.html', context)
+
+
+@require_http_methods(["GET"])
+def search_products(request):
+    """Busca productos por nombre o descripción.
+    
+    Args:
+        request: La solicitud HTTP con parámetro 'q' para la búsqueda.
+        
+    Returns:
+        HttpResponse: Plantilla con resultados de búsqueda.
+    """
+    query = request.GET.get('q', '').strip()
+    
+    if not query:
+        messages.info(request, 'Por favor ingresa un término de búsqueda.')
+        return redirect('products:list_products')
+    
+    # Buscar productos por nombre o descripción
+    products = Product.objects.filter(
+        models.Q(name__icontains=query) | 
+        models.Q(description__icontains=query)
+    ).select_related('category').prefetch_related('promotions').distinct()
+    
+    # Agrupar productos por categoría para mantener el formato de list_products
+    categories_dict = {}
+    for product in products:
+        category = product.category
+        if category not in categories_dict:
+            categories_dict[category] = []
+        categories_dict[category].append(product)
+    
+    context = {
+        'categories': categories_dict,
+        'search_query': query,
+        'results_count': products.count(),
+    }
+    
+    return render(request, 'products/search_results.html', context)
 
 

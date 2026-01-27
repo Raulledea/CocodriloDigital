@@ -1,72 +1,133 @@
-<nav class="navbar navbar-expand-lg navbar-dark navbar-dark-transparent navbar-fixed">
-    <div class="container-fluid">
-        <!-- IZQUIERDA: Brand + Links principales -->
-        <div class="d-flex align-items-center">
-            <a class="navbar-brand me-3" href="{% url 'home' %}">
-                <img src="/static/images/logo.png" alt="CocodriloDigital" height="50">
-            </a>
-            <ul class="navbar-nav d-flex flex-row align-items-center gap-2 mb-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'products:list_products' %}">Productos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart:carrito' %}">Carrito</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart:receipt_list' %}">Mis Recibos</a>
-                </li>
-            </ul>
-        </div>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-modern">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="/static/images/logo.png" alt="CocodriloDigital" height="40">
+        </a>
 
-        <!-- CENTRO: Barra de búsqueda -->
-        <form class="d-flex align-items-center mx-auto" role="search" method="get" action="{% url 'home' %}">
-            <div class="search-container">
-                <input name="q" class="form-control me-2 custom-search" type="search" 
-                       placeholder="Buscar productos" aria-label="Buscar"/>
-            </div>
-            <button class="btn custom-search-btn" type="submit">Buscar</button>
-        </form>
-
-        <!-- DERECHA: Login y Sign Up -->
-        <ul class="navbar-nav d-flex flex-row align-items-center gap-2 mb-0">
-            {% if user.is_authenticated %}
-                {% if user.is_superuser %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'products:add_products' %}">Agregar Producto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'category:add_category' %}">Agregar Categoría</a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">{{ user.username }}</a>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="{% url 'users:logout' %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="nav-link btn btn-link" style="border:none; padding:0; text-decoration:none;">Logout</button>
-                    </form>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:register' %}">Sign Up</a>
-                </li>
-            {% endif %}
-        </ul>
-
-        <!-- Toggler para móviles -->
-        <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Mobile toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Main Navigation -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <i class="fas fa-home me-1"></i>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'products:list_products' %}">
+                        <i class="fas fa-shopping-bag me-1"></i>
+                        <span>Productos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart:carrito' %}">
+                        <i class="fas fa-shopping-cart me-1"></i>
+                        <span>Carrito</span>
+                        <span class="cart-badge badge bg-danger rounded-pill ms-1">0</span>
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart:receipt_list' %}">
+                        <i class="fas fa-receipt me-1"></i>
+                        <span>Mis Recibos</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <!-- Search Bar (Desktop) -->
+            <form class="search-form d-none d-lg-flex me-3" role="search" method="get" action="{% url 'products:search_products' %}">
+                <div class="input-group">
+                    <input name="q" class="form-control" type="search" placeholder="Buscar productos..." aria-label="Buscar">
+                    <button class="btn btn-outline-light" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- User Menu -->
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <!-- Admin Dropdown -->
+                    {% if user.is_superuser %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cog me-1"></i>
+                            <span class="d-none d-md-inline">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                            <li><a class="dropdown-item" href="{% url 'products:add_products' %}">
+                                <i class="fas fa-plus me-2"></i>Agregar Producto
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'category:add_category' %}">
+                                <i class="fas fa-plus me-2"></i>Agregar Categoría
+                            </a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- User Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" 
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-avatar me-2">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <span class="d-none d-md-inline">{{ user.username }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'cart:receipt_list' %}">
+                                <i class="fas fa-receipt me-2"></i>Mis Compras
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'users:logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <!-- Login/Register -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>
+                            <span class="d-none d-md-inline">Login</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light ms-2" href="{% url 'users:register' %}">
+                            <i class="fas fa-user-plus me-1"></i>
+                            <span class="d-none d-md-inline">Registrarse</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Mobile Search (Hidden by default) -->
+    <div class="mobile-search d-lg-none px-3 py-2 border-top">
+        <form class="search-form" role="search" method="get" action="{% url 'products:search_products' %}">
+            <div class="input-group">
+                <input name="q" class="form-control" type="search" placeholder="Buscar productos..." aria-label="Buscar">
+                <button class="btn btn-outline-light" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </nav>
-
-<!-- Espacio para que el contenido no quede detrás del navbar fijo -->
-<div class="navbar-spacer"></div>

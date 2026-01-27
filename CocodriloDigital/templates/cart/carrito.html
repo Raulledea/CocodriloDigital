@@ -1,123 +1,126 @@
 {% extends "base/base.html" %}
 {% load static %}
 
+{% block head_extra %}
+<link rel="stylesheet" href="{% static 'css/pages/cart.css' %}?v=1">
+<script>
+function updateQuantity(productId, change) {
+    const input = document.getElementById(`quantity-${productId}`);
+    const hiddenInput = document.getElementById(`hidden-quantity-${productId}`);
+    const currentValue = parseInt(input.value) || 1;
+    const newValue = Math.max(1, currentValue + change);
+    
+    input.value = newValue;
+    hiddenInput.value = newValue;
+    
+    // Submit form after a short delay
+    setTimeout(() => {
+        document.getElementById(`update-form-${productId}`).submit();
+    }, 300);
+}
+</script>
+{% endblock head_extra %}
+
 {% block content %}
-<section class="h-100">
-  <div class="container h-100 py-5">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-10">
-
-        <!-- TÍTULO -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-normal mb-0">Carrito de Compras</h3>
-        </div>
-
-        {% if cart_items %}
-          {% for item in cart_items %}
-          <div class="card rounded-3 mb-4">
-            <div class="card-body p-4">
-              <div class="row d-flex justify-content-between align-items-center">
-
-                <!-- IMAGEN -->
-                <div class="col-md-2 col-lg-2 col-xl-2">
-                  {% if item.image %}
-                    <img
-                      src="{{ item.image }}"
-                      class="img-fluid rounded-3"
-                      alt="{{ item.name }}">
-                  {% else %}
-                    <div class="bg-light rounded-3 d-flex align-items-center justify-content-center" style="height: 100px;">
-                      <i class="fas fa-image text-muted fa-2x"></i>
-                    </div>
-                  {% endif %}
-                </div>
-
-                <!-- INFO PRODUCTO -->
-                <div class="col-md-3 col-lg-3 col-xl-3">
-                  <p class="lead fw-normal mb-2">{{ item.name }}</p>
-                  <p class="text-muted mb-0">
-                    Precio unitario: ${{ item.price }}
-                  </p>
-                </div>
-
-                <!-- CANTIDAD -->
-                <div class="col-md-3 col-lg-3 col-xl-2 d-flex align-items-center">
-                  <form method="post" action="{% url 'cart:update_carrito' item.product_id %}" class="d-flex">
-                    {% csrf_token %}
-                    <input
-                      type="number"
-                      name="quantity"
-                      value="{{ item.quantity }}"
-                      min="1"
-                      class="form-control form-control-sm me-2">
-                    <button type="submit" class="btn btn-sm btn-outline-primary">
-                      <i class="fas fa-sync"></i>
-                    </button>
-                  </form>
-                </div>
-
-                <!-- SUBTOTAL -->
-                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 class="mb-0">${{ item.subtotal }}</h5>
-                </div>
-
-                <!-- ELIMINAR -->
-                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <form method="post" action="{% url 'cart:remove_from_carrito' item.product_id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-link text-danger p-0">
-                      <i class="fas fa-trash fa-lg"></i>
-                    </button>
-                  </form>
-                </div>
-
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-
-          <!-- TOTAL -->
-          <div class="card mb-4">
-            <div class="card-body d-flex justify-content-between">
-              <h5>Total</h5>
-              <h5>${{ total }}</h5>
-            </div>
-          </div>
-
-          <!-- ACCIONES -->
-          <div class="card">
-            <div class="card-body d-flex justify-content-between">
-              <a href="{% url 'products:list_products' %}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Seguir Comprando
-              </a>
-              {% if user.is_authenticated %}
-                <form method="post" action="{% url 'cart:checkout' %}" class="m-0">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-success btn-lg">
-                    <i class="fas fa-credit-card me-2"></i>Proceder al Pago
-                  </button>
-                </form>
-              {% else %}
-                <a href="{% url 'users:login' %}?next={% url 'cart:carrito' %}" class="btn btn-warning btn-lg">
-                  <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión para Comprar
-                </a>
-              {% endif %}
-            </div>
-          </div>
-
-        {% else %}
-          <div class="alert alert-info text-center">
-            <i class="fas fa-shopping-cart fa-3x mb-3 text-muted"></i>
-            <h4>Tu carrito está vacío.</h4>
-            <p class="mb-0">¡Agrega algunos productos para comenzar!</p>
-            <a href="{% url 'products:list_products' %}" class="btn btn-primary mt-3">
-              <i class="fas fa-shopping-bag me-2"></i>Ver Productos
-            </a>
-          </div>
-        {% endif %}
-
-      </div>
+<!-- Cart Header -->
+<div class="cart-header">
+    <div class="container">
+        <h1 class="cart-title">Tu Carrito</h1>
+        <p class="cart-subtitle">Revisa tus productos antes de finalizar la compra</p>
     </div>
-  </div>
-</section>
-{% endblock %}
+</div>
+
+<div class="container">
+    {% if cart_items %}
+        <div class="cart-container">
+            <!-- Cart Items -->
+            <div class="cart-items">
+                {% for item in cart_items %}
+                    <div class="cart-item">
+                        {% if item.image %}
+                            <img src="{{ item.image }}" alt="{{ item.name }}" class="cart-item-image">
+                        {% else %}
+                            <img src="{% static 'images/default/default01.jpg' %}" alt="{{ item.name }}" class="cart-item-image">
+                        {% endif %}
+                        
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-name">{{ item.name }}</h3>
+                            <p class="cart-item-price">${{ item.price }}</p>
+                            
+                            <div class="cart-item-controls">
+                                <div class="quantity-control">
+                                    <button type="button" class="quantity-btn quantity-minus" onclick="updateQuantity({{ item.product_id }}, -1)">-</button>
+                                    <input type="number" class="quantity-input" id="quantity-{{ item.product_id }}" value="{{ item.quantity }}" min="1" readonly>
+                                    <button type="button" class="quantity-btn quantity-plus" onclick="updateQuantity({{ item.product_id }}, 1)">+</button>
+                                </div>
+                                
+                                <form method="post" action="{% url 'cart:update_carrito' item.product_id %}" id="update-form-{{ item.product_id }}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" id="hidden-quantity-{{ item.product_id }}" value="{{ item.quantity }}">
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item-subtotal">
+                            ${{ item.subtotal }}
+                        </div>
+                        
+                        <form method="post" action="{% url 'cart:remove_from_carrito' item.product_id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="remove-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span class="summary-label">Subtotal:</span>
+                    <span class="summary-value">${{ total }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Envío:</span>
+                    <span class="summary-value">Gratis</span>
+                </div>
+                <div class="summary-row total">
+                    <span class="summary-label">Total:</span>
+                    <span class="summary-value">${{ total }}</span>
+                </div>
+                
+                <div class="cart-actions">
+                    <a href="{% url 'products:list_products' %}" class="btn-continue">
+                        <i class="fas fa-arrow-left me-2"></i>Seguir Comprando
+                    </a>
+                    
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'cart:checkout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-checkout">
+                                <i class="fas fa-credit-card me-2"></i>Procesar Compra
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'users:login' %}" class="btn-checkout">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión para Comprar
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h3 class="empty-cart-title">Tu carrito está vacío</h3>
+            <p class="empty-cart-text">Agrega algunos productos para comenzar tu compra</p>
+            <a href="{% url 'products:list_products' %}" class="btn btn-modern">
+                <i class="fas fa-shopping-bag me-2"></i>Ver Productos
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

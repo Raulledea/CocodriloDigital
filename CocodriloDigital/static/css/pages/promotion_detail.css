@@ -1,0 +1,346 @@
+/* Promotion Detail Page - Following product_detail style */
+
+/* Main Container */
+.promotion-detail-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Header Section */
+.promotion-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.promotion-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.promotion-header p {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* Section Headers */
+.product-section h3,
+.promotion-info-section h3,
+.price-calculation-section h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    position: relative;
+}
+
+.product-section h3::before,
+.promotion-info-section h3::before,
+.price-calculation-section h3::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Product Section */
+.product-section {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.product-section .row {
+    align-items: center;
+}
+
+.product-section .col-md-3 img {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-section .col-md-3 img:hover {
+    transform: scale(1.05);
+}
+
+.product-section .col-md-9 p {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: #495057;
+}
+
+.product-section .col-md-9 strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Promotion Details */
+.promotion-details {
+    background: #fff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background-color 0.3s ease;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row:hover {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 0 -0.5rem;
+    padding: 1rem 0.5rem;
+}
+
+.detail-row .label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 1.05rem;
+}
+
+.detail-row .value {
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 1.05rem;
+}
+
+.highlight-discount {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 16px rgba(238, 90, 36, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Price Calculation */
+.price-calculation-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    border-radius: 16px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.price-calculation-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.price-calculation-section h3 {
+    color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 2rem;
+}
+
+.price-calculation-section h3::before {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.price-calc {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.calc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.calc-item:last-child {
+    border-bottom: none;
+}
+
+.calc-item.total {
+    border-top: 2px solid rgba(255, 255, 255, 0.4);
+    margin-top: 0.5rem;
+    padding-top: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.calc-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+.calc-value {
+    color: white;
+    font-weight: 600;
+}
+
+.calc-discount {
+    color: #4ade80 !important;
+    font-weight: 700;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e9ecef;
+}
+
+.action-buttons .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.action-buttons .btn-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+}
+
+.action-buttons .btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+}
+
+.action-buttons .btn-secondary {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .promotion-detail-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .promotion-header h1 {
+        font-size: 2rem;
+    }
+    
+    .product-section .row {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .product-section .col-md-3 {
+        margin-bottom: 1.5rem;
+    }
+    
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .action-buttons .btn {
+        justify-content: center;
+    }
+}
+
+/* Animations */
+.promotion-detail-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Badge improvements */
+.badge {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 50px;
+}
+
+/* Status indicators */
+.badge.bg-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.badge.bg-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}

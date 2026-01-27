@@ -2,111 +2,114 @@
 {% load static %}
 
 {% block head_extra %}
-  <link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=4">
+<link rel="stylesheet" href="{% static 'css/pages/promotion_detail.css' %}?v=1">
 {% endblock head_extra %}
 
 {% block content %}
-  <div class="container mt-5">
-    <div class="promotion-detail-container">
-      <!-- Encabezado -->
-      <div class="promotion-header mb-4">
-        <h1>Detalles de la Oferta</h1>
-        <p class="text-muted">Producto: <strong>{{ product.name }}</strong></p>
-      </div>
-
-      <!-- Información del Producto -->
-      <div class="product-section mb-4">
-        <h3>Información del Producto</h3>
-        <div class="row">
-          <div class="col-md-3">
-            {% if product.image and product.image.url %}
-              <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="img-fluid rounded">
-            {% else %}
-              <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid rounded">
-            {% endif %}
-          </div>
-          <div class="col-md-9">
-            <p><strong>Nombre:</strong> {{ product.name }}</p>
-            <p><strong>Categoría:</strong> {{ product.category.name }}</p>
-            <p><strong>Precio Base:</strong> ${{ product.price }}</p>
-            <p><strong>Stock:</strong> {{ product.stock }} unidades</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Información de la Oferta -->
-      <div class="promotion-info-section mb-4">
-        <h3>Información de la Oferta</h3>
-        
-        <div class="promotion-details">
-          <div class="detail-row">
-            <span class="label">Porcentaje de Descuento:</span>
-            <span class="value highlight-discount">{{ promotion.discount_percent }}%</span>
-          </div>
-
-          <div class="detail-row">
-            <span class="label">Fecha de Inicio:</span>
-            <span class="value">{{ promotion.start_date|date:"d/m/Y H:i" }}</span>
-          </div>
-
-          <div class="detail-row">
-            <span class="label">Fecha de Fin:</span>
-            <span class="value">{{ promotion.end_date|date:"d/m/Y H:i" }}</span>
-          </div>
-
-          <div class="detail-row">
-            <span class="label">Estado de la Oferta:</span>
-            <span class="value">
-              {% if promotion.is_active %}
-                <span class="badge bg-success">Activa</span>
-              {% else %}
-                <span class="badge bg-danger">Inactiva</span>
-              {% endif %}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cálculo de Precios -->
-      <div class="price-calculation-section mb-4">
-        <h3>Cálculo de Precio</h3>
-        
-        <div class="price-calc">
-          <div class="calc-item">
-            <span class="calc-label">Precio Original:</span>
-            <span class="calc-value">${{ product.price }}</span>
-          </div>
-
-          <div class="calc-item">
-            <span class="calc-label">Descuento ({{ promotion.discount_percent }}%):</span>
-            <span class="calc-value calc-discount">
-              -${{ discount_amount|floatformat:2 }}
-            </span>
-          </div>
-
-          <div class="calc-item total">
-            <span class="calc-label">Precio con Descuento:</span>
-            <span class="calc-value">
-              ${{ discounted_price|floatformat:2 }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Botones de Acción -->
-      <div class="action-buttons">
-        {% if user.is_superuser %}
-          <a href="{% url 'products:edit_promotion' product.id promotion.id %}" class="btn btn-warning">
-            <i class="fas fa-edit"></i> Editar Oferta
-          </a>
-          <a href="{% url 'products:delete_promotion' product.id promotion.id %}" class="btn btn-danger">
-            <i class="fas fa-trash"></i> Eliminar Oferta
-          </a>
-        {% endif %}
-        <a href="{% url 'products:product_detail' product.id %}" class="btn btn-secondary">
-          <i class="fas fa-arrow-left"></i> Volver a Producto
-        </a>
-      </div>
+<!-- Promotion Detail Header -->
+<div class="products-header">
+    <div class="container">
+        <h1 class="products-title">Detalles de la Oferta</h1>
+        <p class="products-subtitle">Revisa la información completa de esta promoción</p>
     </div>
-  </div>
+</div>
+
+<div class="container">
+    <div class="promotion-detail-container">
+        <!-- Product Section -->
+        <div class="product-section mb-4">
+            <h3>Información del Producto</h3>
+            <div class="row">
+                <div class="col-md-3">
+                    {% if product.image and product.image.url %}
+                        <img src="{{ product.image.url }}" alt="Imagen de {{ product.name }}" class="img-fluid rounded">
+                    {% else %}
+                        <img src="{% static 'images/default/default01.jpg' %}" alt="Imagen por defecto" class="img-fluid rounded">
+                    {% endif %}
+                </div>
+                <div class="col-md-9">
+                    <p><strong>Nombre:</strong> {{ product.name }}</p>
+                    <p><strong>Categoría:</strong> {{ product.category.name }}</p>
+                    <p><strong>Precio Base:</strong> ${{ product.price }}</p>
+                    <p><strong>Stock:</strong> {{ product.stock }} unidades</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promotion Info Section -->
+        <div class="promotion-info-section mb-4">
+            <h3>Información de la Oferta</h3>
+            
+            <div class="promotion-details">
+                <div class="detail-row">
+                    <span class="label">Porcentaje de Descuento:</span>
+                    <span class="value highlight-discount">{{ promotion.discount_percent }}%</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">Fecha de Inicio:</span>
+                    <span class="value">{{ promotion.start_date|date:"d/m/Y H:i" }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">Fecha de Fin:</span>
+                    <span class="value">{{ promotion.end_date|date:"d/m/Y H:i" }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">Estado de la Oferta:</span>
+                    <span class="value">
+                        {% if promotion.is_active %}
+                            <span class="badge bg-success">Activa</span>
+                        {% else %}
+                            <span class="badge bg-danger">Inactiva</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Calculation Section -->
+        <div class="price-calculation-section mb-4">
+            <h3>Cálculo de Precio</h3>
+            
+            <div class="price-calc">
+                <div class="calc-item">
+                    <span class="calc-label">Precio Original:</span>
+                    <span class="calc-value">${{ product.price }}</span>
+                </div>
+
+                <div class="calc-item">
+                    <span class="calc-label">Descuento ({{ promotion.discount_percent }}%):</span>
+                    <span class="calc-value calc-discount">
+                        -${{ discount_amount|floatformat:2 }}
+                    </span>
+                </div>
+
+                <div class="calc-item total">
+                    <span class="calc-label">Precio con Descuento:</span>
+                    <span class="calc-value">
+                        ${{ discounted_price|floatformat:2 }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            {% if user.is_superuser %}
+                <a href="{% url 'products:edit_promotion' product.id promotion.id %}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Editar Oferta
+                </a>
+                <a href="{% url 'products:delete_promotion' product.id promotion.id %}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar Oferta
+                </a>
+            {% endif %}
+            <a href="{% url 'products:product_detail' product.id %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver a Producto
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock content %}
