@@ -25,6 +25,7 @@ urlpatterns = [
     path('productos/', include('products.urls')),  # Sección de productos
     path('categoria/', include('category.urls')),  # Rutas de categorías
     path('auth/', include('users.urls')),  # Autenticación
+    path('carrito/', include('cart.urls')),  # Carrito de compras y recibos
 ]
 
 # Servir archivos multimedia en desarrollo

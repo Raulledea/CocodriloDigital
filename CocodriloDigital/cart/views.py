@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from decimal import Decimal
 from products.models import Product
 from .models import Receipt, ReceiptItem
@@ -163,82 +162,3 @@ def receipt_detail(request, receipt_id):
     """
     receipt = get_object_or_404(Receipt, id=receipt_id, user=request.user)
     return render(request, 'cart/receipt_detail.html', {'receipt': receipt})
-
-
-# API Endpoints for AJAX
-@require_http_methods(["GET"])
-def cart_count(request):
-    """
-    GET: Retorna el número de items en el carrito para AJAX.
-    """
-    carrito = request.session.get('carrito', {})
-    count = sum(item['quantity'] for item in carrito.values())
-    
-    return JsonResponse({'count': count})
-
-
-@require_http_methods(["POST"])
-def ajax_add_to_carrito(request, product_id):
-    """
-    POST: Agrega producto al carrito via AJAX.
-    """
-    if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({'error': 'Invalid request'}, status=400)
-    
-    product = get_object_or_404(Product, pk=product_id)
-    carrito = request.session.get('carrito', {})
-    product_id_str = str(product.id)
-
-    if product_id_str in carrito:
-        carrito[product_id_str]['quantity'] += 1
-    else:
-        carrito[product_id_str] = {
-            'name': product.name,
-            'price': float(product.final_price if hasattr(product, 'final_price') else product.price),
-            'quantity': 1,
-            'image': product.image.url if product.image else '',
-        }
-
-    request.session['carrito'] = carrito
-    request.session.modified = True
-    
-    count = sum(item['quantity'] for item in carrito.values())
-    
-    return JsonResponse({
-        'success': True,
-        'message': f'{product.name} añadido al carrito',
-        'count': count,
-        'product': {
-            'name': product.name,
-            'price': float(product.final_price if hasattr(product, 'final_price') else product.price),
-            'image': product.image.url if product.image else ''
-        }
-    })
-
-
-@require_http_methods(["POST"])
-def ajax_remove_from_carrito(request, product_id):
-    """
-    POST: Elimina producto del carrito via AJAX.
-    """
-    if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({'error': 'Invalid request'}, status=400)
-    
-    carrito = request.session.get('carrito', {})
-    product_id_str = str(product_id)
-
-    if product_id_str in carrito:
-        product_name = carrito[product_id_str]['name']
-        del carrito[product_id_str]
-        request.session['carrito'] = carrito
-        request.session.modified = True
-        
-        count = sum(item['quantity'] for item in carrito.values())
-        
-        return JsonResponse({
-            'success': True,
-            'message': f'{product_name} eliminado del carrito',
-            'count': count
-        })
-    
-    return JsonResponse({'error': 'Product not found in cart'}, status=404)

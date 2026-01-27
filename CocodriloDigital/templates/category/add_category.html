@@ -43,9 +43,9 @@
           <i class="fas fa-save"></i> {% if edit %}Guardar Cambios{% else %}Guardar Categoría{% endif %}
         </button>
         {% if edit %}
-          <a href="{% url 'category_detail' category.id %}" class="btn btn-secondary">Cancelar</a>
+          <a href="{% url 'category:category_detail' category.id %}" class="btn btn-secondary">Cancelar</a>
         {% else %}
-          <a href="{% url 'list_products' %}" class="btn btn-secondary">Cancelar</a>
+          <a href="{% url 'products:list_products' %}" class="btn btn-secondary">Cancelar</a>
         {% endif %}
       </div>
     </form>
