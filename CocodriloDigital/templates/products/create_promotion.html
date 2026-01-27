@@ -81,7 +81,7 @@
           <button type="submit" class="btn btn-primary">
             <i class="fas fa-save"></i> {% if edit %}Guardar Cambios{% else %}Crear Oferta{% endif %}
           </button>
-          <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">
+          <a href="{% url 'products:product_detail' product.id %}" class="btn btn-secondary">
             <i class="fas fa-times"></i> Cancelar
           </a>
         </div>

@@ -10,10 +10,13 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'list_products' %}">Productos</a>
+                    <a class="nav-link" href="{% url 'products:list_products' %}">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'carrito' %}">Carrito</a>
+                    <a class="nav-link" href="{% url 'cart:carrito' %}">Carrito</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart:receipt_list' %}">Mis Recibos</a>
                 </li>
             </ul>
         </div>
@@ -32,10 +35,10 @@
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'add_products' %}">Agregar Producto</a>
+                        <a class="nav-link" href="{% url 'products:add_products' %}">Agregar Producto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'add_category' %}">Agregar Categoría</a>
+                        <a class="nav-link" href="{% url 'category:add_category' %}">Agregar Categoría</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">

@@ -6,6 +6,8 @@ from django.urls import path
 
 from .views import add_category, category_detail, edit_category, delete_category
 
+app_name = 'category'
+
 urlpatterns = [
     # Ruta para añadir una nueva categoría
     path('add_category/', add_category, name='add_category'),

@@ -92,9 +92,9 @@
         </button>
 
         {% if edit %}
-          <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">Cancelar</a>
+          <a href="{% url 'products:product_detail' product.id %}" class="btn btn-secondary">Cancelar</a>
         {% else %}
-          <a href="{% url 'list_products' %}" class="btn btn-secondary">Cancelar</a>
+          <a href="{% url 'products:list_products' %}" class="btn btn-secondary">Cancelar</a>
         {% endif %}
       </div>
 

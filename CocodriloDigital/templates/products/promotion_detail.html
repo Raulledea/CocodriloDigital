@@ -96,14 +96,14 @@
       <!-- Botones de Acción -->
       <div class="action-buttons">
         {% if user.is_superuser %}
-          <a href="{% url 'edit_promotion' product.id promotion.id %}" class="btn btn-warning">
+          <a href="{% url 'products:edit_promotion' product.id promotion.id %}" class="btn btn-warning">
             <i class="fas fa-edit"></i> Editar Oferta
           </a>
-          <a href="{% url 'delete_promotion' product.id promotion.id %}" class="btn btn-danger">
+          <a href="{% url 'products:delete_promotion' product.id promotion.id %}" class="btn btn-danger">
             <i class="fas fa-trash"></i> Eliminar Oferta
           </a>
         {% endif %}
-        <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">
+        <a href="{% url 'products:product_detail' product.id %}" class="btn btn-secondary">
           <i class="fas fa-arrow-left"></i> Volver a Producto
         </a>
       </div>
