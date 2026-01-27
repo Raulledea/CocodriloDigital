@@ -1,42 +1,203 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="CocodriloDigital - Tu tienda de productos digitales">
+    <meta name="keywords" content="productos, tienda, digital, ecommerce">
+    <title>{% block title %}CocodriloDigital{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/modern-ui.css' %}?v=1">
+    
     {% block head_extra %}{% endblock head_extra %}
+    
+    <!-- Custom styles -->
+    <style>
+        /* Additional responsive styles */
+        @media (max-width: 768px) {
+            .navbar-modern .navbar-brand img {
+                height: 30px;
+            }
+            .brand-text {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Image modal styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        .image-modal .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .image-modal img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #bbb;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+        }
+        
+        .loading-spinner-large {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner-large"></div>
+    </div>
+    
     {% block header %}{% endblock %}
     
     {% include 'base/partials/nav.html' %}
 
-    <!-- Mensajes de alerta globales -->
+    <!-- Enhanced Messages -->
     {% if messages %}
-      <div class="container mt-4">
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050">
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <div class="toast align-items-center text-white bg-{{ message.tags }} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+              <div class="toast-body">
+                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+                {{ message }}
+              </div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
           </div>
         {% endfor %}
       </div>
     {% endif %}
 
-    <main class="container mt-4">
+    <main class="container-fluid">
         {% block content %}{% endblock content %}
     </main>
 
-    <footer class="bg-body-secondary mt-5">
-        {% include "base/partials/footer.html" %}
-        {% block footer %}{% endblock footer %}
+    <!-- Modern Footer -->
+    <footer class="footer-modern">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">CocodriloDigital</h5>
+                    <p class="text-light">Tu tienda confiable de productos digitales con la mejor calidad y servicio.</p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}" class="text-light text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="{% url 'products:list_products' %}" class="text-light text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="{% url 'cart:carrito' %}" class="text-light text-decoration-none">Carrito</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="mb-2"><a href="{% url 'cart:receipt_list' %}" class="text-light text-decoration-none">Mis Compras</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">Contacto</h5>
+                    <p class="text-light">
+                        <i class="fas fa-envelope me-2"></i> info@cocodrilodigital.com<br>
+                        <i class="fas fa-phone me-2"></i> +57 300 123 4567<br>
+                        <i class="fas fa-map-marker-alt me-2"></i> Colombia
+                    </p>
+                </div>
+            </div>
+            <hr class="border-light">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-light mb-0">&copy; 2024 CocodriloDigital. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="{% static 'js/modern-ui.js' %}?v=1"></script>
+    
     {% block scripts %}{% endblock scripts %}
+    
+    <!-- Initialize toasts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all toasts
+            const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            const toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl, {
+                    autohide: true,
+                    delay: 5000
+                });
+            });
+            
+            // Show all toasts
+            toastList.forEach(toast => toast.show());
+        });
+    </script>
 </body>
 </html>
-        
