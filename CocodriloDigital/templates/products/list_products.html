@@ -13,7 +13,7 @@
   <section class="category-section mb-4">
     <div class="category-header">
       <h2>
-        <a href="{% url 'category_detail' category.id %}" class="category-link">{{ category.name }}</a>
+        <a href="{% url 'category:category_detail' category.id %}" class="category-link">{{ category.name }}</a>
       </h2>
       {% if category.description %}
         <p class="text-muted">{{ category.description }}</p>
@@ -22,7 +22,7 @@
 
     <div class="products-grid">
       {% for product in category.products.all %}
-        <a href="{% url 'product_detail' product.id %}" class="product-card-link">
+        <a href="{% url 'products:product_detail' product.id %}" class="product-card-link">
           <article class="product-card">
 
             <div class="img-center">

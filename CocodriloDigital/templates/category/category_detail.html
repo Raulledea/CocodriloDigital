@@ -19,14 +19,14 @@
     <!-- Botones de acción para la categoría -->
     <div class="category-action-buttons mb-4">
       {% if user.is_superuser %}
-        <a href="{% url 'edit_category' category.id %}" class="btn btn-warning">
+        <a href="{% url 'category:edit_category' category.id %}" class="btn btn-warning">
           <i class="fas fa-edit"></i> Modificar Categoría
         </a>
-        <a href="{% url 'delete_category' category.id %}" class="btn btn-danger">
+        <a href="{% url 'category:delete_category' category.id %}" class="btn btn-danger">
           <i class="fas fa-trash"></i> Eliminar Categoría
         </a>
       {% endif %}
-      <a href="{% url 'list_products' %}" class="btn btn-secondary">
+      <a href="{% url 'products:list_products' %}" class="btn btn-secondary">
         <i class="fas fa-arrow-left"></i> Volver a Productos
       </a>
     </div>
@@ -38,7 +38,7 @@
       {% if category.products.all %}
         <div class="products-grid">
           {% for product in category.products.all %}
-            <a href="{% url 'product_detail' product.id %}" class="product-card-link">
+            <a href="{% url 'products:product_detail' product.id %}" class="product-card-link">
               <article class="product-card">
                 <div class="img-center">
                   {% if product.image and product.image.url %}

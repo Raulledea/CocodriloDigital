@@ -1,0 +1,99 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+              <i class="fas fa-receipt me-2"></i>Recibo de Compra
+            </h4>
+            <span class="badge bg-light text-dark">{{ receipt.receipt_id }}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Información del recibo -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <p class="mb-1"><strong>Cliente:</strong> {{ receipt.user.username }}</p>
+              <p class="mb-1"><strong>Email:</strong> {{ receipt.user.email }}</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+              <p class="mb-1"><strong>Fecha:</strong> {{ receipt.created_at|date:"d/m/Y H:i" }}</p>
+              <p class="mb-1"><strong>ID:</strong> {{ receipt.receipt_id }}</p>
+            </div>
+          </div>
+
+          <!-- Productos comprados -->
+          <div class="table-responsive mb-4">
+            <table class="table">
+              <thead class="table-light">
+                <tr>
+                  <th>Producto</th>
+                  <th class="text-center">Cantidad</th>
+                  <th class="text-end">Precio Unitario</th>
+                  <th class="text-end">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in receipt.items.all %}
+                <tr>
+                  <td>{{ item.product_name }}</td>
+                  <td class="text-center">{{ item.quantity }}</td>
+                  <td class="text-end">${{ item.product_price }}</td>
+                  <td class="text-end">${{ item.subtotal }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr class="table-light">
+                  <th colspan="3" class="text-end">Total:</th>
+                  <th class="text-end text-success">${{ receipt.total_amount }}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- Acciones -->
+          <div class="d-flex justify-content-between">
+            <a href="{% url 'cart:receipt_list' %}" class="btn btn-secondary">
+              <i class="fas fa-arrow-left me-2"></i>Volver a Mis Recibos
+            </a>
+            <div>
+              <button onclick="window.print()" class="btn btn-outline-primary me-2">
+                <i class="fas fa-print me-2"></i>Imprimir
+              </button>
+              <a href="{% url 'products:list_products' %}" class="btn btn-primary">
+                <i class="fas fa-shopping-bag me-2"></i>Nueva Compra
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje de agradecimiento -->
+      <div class="alert alert-success text-center mt-4">
+        <i class="fas fa-check-circle fa-2x mb-2"></i>
+        <h5>¡Gracias por tu compra!</h5>
+        <p class="mb-0">Tu pedido ha sido procesado exitosamente.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos para impresión -->
+<style>
+@media print {
+  .btn, .alert {
+    display: none !important;
+  }
+  .card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+}
+</style>
+{% endblock %}

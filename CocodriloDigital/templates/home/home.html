@@ -10,7 +10,7 @@
     <div class="products-grid">
         {% for product in discounted_products %}
             <!-- Solo un article por producto, envuelto en el link -->
-            <a href="{% url 'product_detail' product.id %}" class="product-card-link">
+            <a href="{% url 'products:product_detail' product.id %}" class="product-card-link">
                 <article class="product-card">
                     <div class="h-100">
                         
