@@ -2,9 +2,8 @@
 {% load static %}
 
 {% block head_extra %}
-  <link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=4">
-  <link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}?v=4">
-
+<link rel="stylesheet" href="{% static 'css/components/product_card.css' %}?v=4">
+<link rel="stylesheet" href="{% static 'css/pages/product_detail.css' %}?v=4">
 {% endblock head_extra %}
 
 {% block content %}
@@ -104,18 +103,12 @@
       {% endwith %}
 
       <!-- Formulario de carrito -->
-<<<<<<< HEAD
-      <div class="d-grid gap-2">
-        <button type="button" class="btn btn-modern btn-lg" onclick="CartUtils.addToCart({{ product.id }})">
+      <form method="post" action="{% url 'cart:add_to_carrito' product.id %}" class="d-grid gap-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-modern btn-lg add-to-cart-btn" data-product-id="{{ product.id }}">
           <i class="fas fa-shopping-cart me-2"></i>Agregar al carrito
         </button>
-      </div>
-=======
-      <form method="post" action="{% url 'cart:add_to_carrito' product.id %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn mt-2">Agregar al carrito</button>
       </form>
->>>>>>> main
 
       <!-- Botones de acción -->
       <div class="action-buttons mt-3">

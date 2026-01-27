@@ -18,8 +18,20 @@
           <!-- Información del recibo -->
           <div class="row mb-4">
             <div class="col-md-6">
-              <p class="mb-1"><strong>Cliente:</strong> {{ receipt.user.username }}</p>
-              <p class="mb-1"><strong>Email:</strong> {{ receipt.user.email }}</p>
+              <p class="mb-1"><strong>Cliente:</strong> 
+                {% if receipt.user %}
+                  {{ receipt.user.username }}
+                {% else %}
+                  <span class="text-muted">Usuario eliminado</span>
+                {% endif %}
+              </p>
+              <p class="mb-1"><strong>Email:</strong> 
+                {% if receipt.user %}
+                  {{ receipt.user.email }}
+                {% else %}
+                  <span class="text-muted">No disponible</span>
+                {% endif %}
+              </p>
             </div>
             <div class="col-md-6 text-md-end">
               <p class="mb-1"><strong>Fecha:</strong> {{ receipt.created_at|date:"d/m/Y H:i" }}</p>
@@ -41,7 +53,12 @@
               <tbody>
                 {% for item in receipt.items.all %}
                 <tr>
-                  <td>{{ item.product_name }}</td>
+                  <td>
+                    {{ item.product_name }}
+                    {% if not item.product %}
+                      <span class="badge bg-warning ms-2">Producto eliminado</span>
+                    {% endif %}
+                  </td>
                   <td class="text-center">{{ item.quantity }}</td>
                   <td class="text-end">${{ item.product_price }}</td>
                   <td class="text-end">${{ item.subtotal }}</td>

@@ -1,82 +1,13 @@
-<<<<<<< HEAD
 <nav class="navbar navbar-expand-lg navbar-dark navbar-modern">
     <div class="container">
         <!-- Brand -->
-        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-            <img src="/static/images/logo.png" alt="CocodriloDigital" height="40" class="me-2">
-            <span class="brand-text d-none d-md-inline">CocodriloDigital</span>
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="/static/images/logo.png" alt="CocodriloDigital" height="40">
         </a>
 
         <!-- Mobile toggler -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-=======
-<nav class="navbar navbar-expand-lg navbar-dark navbar-dark-transparent navbar-fixed">
-    <div class="container-fluid">
-        <!-- IZQUIERDA: Brand + Links principales -->
-        <div class="d-flex align-items-center">
-            <a class="navbar-brand me-3" href="{% url 'home' %}">
-                <img src="/static/images/logo.png" alt="CocodriloDigital" height="50">
-            </a>
-            <ul class="navbar-nav d-flex flex-row align-items-center gap-2 mb-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'products:list_products' %}">Productos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart:carrito' %}">Carrito</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart:receipt_list' %}">Mis Recibos</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- CENTRO: Barra de búsqueda -->
-        <form class="d-flex align-items-center mx-auto" role="search" method="get" action="{% url 'home' %}">
-            <div class="search-container">
-                <input name="q" class="form-control me-2 custom-search" type="search" 
-                       placeholder="Buscar productos" aria-label="Buscar"/>
-            </div>
-            <button class="btn custom-search-btn" type="submit">Buscar</button>
-        </form>
-
-        <!-- DERECHA: Login y Sign Up -->
-        <ul class="navbar-nav d-flex flex-row align-items-center gap-2 mb-0">
-            {% if user.is_authenticated %}
-                {% if user.is_superuser %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'products:add_products' %}">Agregar Producto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'category:add_category' %}">Agregar Categoría</a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">{{ user.username }}</a>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="{% url 'users:logout' %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="nav-link btn btn-link" style="border:none; padding:0; text-decoration:none;">Logout</button>
-                    </form>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:register' %}">Sign Up</a>
-                </li>
-            {% endif %}
-        </ul>
-
-        <!-- Toggler para móviles -->
-        <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
->>>>>>> main
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -114,7 +45,7 @@
             </ul>
 
             <!-- Search Bar (Desktop) -->
-            <form class="search-form d-none d-lg-flex me-3" role="search" method="get" action="{% url 'home' %}">
+            <form class="search-form d-none d-lg-flex me-3" role="search" method="get" action="{% url 'products:search_products' %}">
                 <div class="input-group">
                     <input name="q" class="form-control" type="search" placeholder="Buscar productos..." aria-label="Buscar">
                     <button class="btn btn-outline-light" type="submit">
@@ -190,7 +121,7 @@
 
     <!-- Mobile Search (Hidden by default) -->
     <div class="mobile-search d-lg-none px-3 py-2 border-top">
-        <form class="search-form" role="search" method="get" action="{% url 'home' %}">
+        <form class="search-form" role="search" method="get" action="{% url 'products:search_products' %}">
             <div class="input-group">
                 <input name="q" class="form-control" type="search" placeholder="Buscar productos..." aria-label="Buscar">
                 <button class="btn btn-outline-light" type="submit">

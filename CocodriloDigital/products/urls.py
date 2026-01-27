@@ -11,6 +11,7 @@ app_name = 'products'
 urlpatterns = [
     # ===== PRODUCTOS =====
     path('', views.list_products, name='list_products'),
+    path('search/', views.search_products, name='search_products'),
     path('add/', views.add_product, name='add_products'),  # ruta para agregar productos
     path('<int:product_id>/', views.product_detail, name='product_detail'),
     path('<int:product_id>/edit/', views.edit_product, name='edit_product'),

@@ -4,7 +4,32 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 from products.models import Product
-from .models import Receipt, ReceiptItem
+from .models import Cart, CartItem, Receipt, ReceiptItem
+
+
+def get_cart_context(request):
+    """Obtiene el contexto del carrito para las plantillas."""
+    cart = Cart.get_or_create_cart(request)
+    cart_items = []
+    total = 0
+    
+    for item in cart.items.all():
+        cart_items.append({
+            'product_id': item.product.id,
+            'name': item.product.name,
+            'price': item.price,
+            'quantity': item.quantity,
+            'image': item.product.image.url if item.product.image else '',
+            'subtotal': item.subtotal
+        })
+    
+    total = cart.get_total()
+    
+    return {
+        'cart_items': cart_items,
+        'total': total,
+        'cart_count': cart.get_total_items()
+    }
 
 
 @require_http_methods(["GET"])
@@ -12,56 +37,33 @@ def carrito_view(request):
     """
     Vista para mostrar el carrito de compras.
     """
-    carrito = request.session.get('carrito', {})
-    
-    # Convertir el carrito a formato más amigable para el template
-    cart_items = []
-    total = 0
-    
-    for product_id, item in carrito.items():
-        subtotal = item['price'] * item['quantity']
-        total += subtotal
-        cart_items.append({
-            'product_id': product_id,
-            'name': item['name'],
-            'price': item['price'],
-            'quantity': item['quantity'],
-            'image': item.get('image', ''),
-            'subtotal': subtotal
-        })
-
-    context = {
-        'cart_items': cart_items,
-        'total': total,
-    }
-
+    context = get_cart_context(request)
     return render(request, 'cart/carrito.html', context)
 
 
 @require_http_methods(["POST"])
 def add_to_carrito(request, product_id):
     """
-    POST: Agrega un producto al carrito usando sesión.
+    POST: Agrega un producto al carrito usando persistencia.
     """
     product = get_object_or_404(Product, pk=product_id)
-
-    carrito = request.session.get('carrito', {})
-
-    product_id_str = str(product.id)
-
-    if product_id_str in carrito:
-        carrito[product_id_str]['quantity'] += 1
-    else:
-        carrito[product_id_str] = {
-            'name': product.name,
-            'price': float(product.final_price if hasattr(product, 'final_price') else product.price),
+    cart = Cart.get_or_create_cart(request)
+    
+    # Obtener o crear el item del carrito
+    cart_item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        product=product,
+        defaults={
             'quantity': 1,
-            'image': product.image.url if product.image else '',
+            'price': product.final_price if hasattr(product, 'final_price') else product.price
         }
-
-    request.session['carrito'] = carrito
-    request.session.modified = True
-
+    )
+    
+    if not created:
+        # Si el item ya existe, incrementar cantidad
+        cart_item.quantity += 1
+        cart_item.save()
+    
     messages.success(request, 'Producto añadido al carrito.')
     return redirect('cart:carrito')
 
@@ -77,15 +79,16 @@ def update_carrito(request, product_id):
         messages.error(request, 'La cantidad debe ser al menos 1.')
         return redirect('cart:carrito')
     
-    carrito = request.session.get('carrito', {})
-    product_id_str = str(product_id)
-
-    if product_id_str in carrito:
-        carrito[product_id_str]['quantity'] = quantity
-        request.session['carrito'] = carrito
-        request.session.modified = True
+    cart = Cart.get_or_create_cart(request)
+    
+    try:
+        cart_item = cart.items.get(product_id=product_id)
+        cart_item.quantity = quantity
+        cart_item.save()
         messages.success(request, 'Cantidad actualizada.')
-
+    except CartItem.DoesNotExist:
+        messages.error(request, 'El producto no está en tu carrito.')
+    
     return redirect('cart:carrito')
 
 
@@ -94,15 +97,15 @@ def remove_from_carrito(request, product_id):
     """
     POST: Elimina un producto del carrito.
     """
-    carrito = request.session.get('carrito', {})
-    product_id_str = str(product_id)
-
-    if product_id_str in carrito:
-        del carrito[product_id_str]
-        request.session['carrito'] = carrito
-        request.session.modified = True
+    cart = Cart.get_or_create_cart(request)
+    
+    try:
+        cart_item = cart.items.get(product_id=product_id)
+        cart_item.delete()
         messages.success(request, 'Producto eliminado del carrito.')
-
+    except CartItem.DoesNotExist:
+        messages.error(request, 'El producto no está en tu carrito.')
+    
     return redirect('cart:carrito')
 
 
@@ -112,14 +115,14 @@ def checkout(request):
     """
     POST: Procesa el checkout y guarda el recibo en la base de datos.
     """
-    carrito = request.session.get('carrito', {})
+    cart = Cart.get_or_create_cart(request)
     
-    if not carrito:
+    if not cart.items.exists():
         messages.error(request, 'Tu carrito está vacío.')
         return redirect('cart:carrito')
     
     # Crear el recibo
-    total = sum(item['price'] * item['quantity'] for item in carrito.values())
+    total = cart.get_total()
     receipt = Receipt.objects.create(
         user=request.user,
         receipt_id=Receipt.generate_receipt_id(),
@@ -127,18 +130,18 @@ def checkout(request):
     )
     
     # Crear los items del recibo
-    for item in carrito.values():
+    for item in cart.items.all():
         ReceiptItem.objects.create(
             receipt=receipt,
-            product_name=item['name'],
-            product_price=item['price'],
-            quantity=item['quantity'],
-            subtotal=item['price'] * item['quantity']
+            product=item.product,  # Guardar referencia al producto
+            product_name=item.product.name,
+            product_price=item.price,
+            quantity=item.quantity,
+            subtotal=item.subtotal
         )
     
     # Limpiar el carrito
-    request.session['carrito'] = {}
-    request.session.modified = True
+    cart.items.all().delete()
     
     messages.success(request, f'Compra realizada exitosamente. Recibo: {receipt.receipt_id}')
     return redirect('cart:receipt_detail', receipt_id=receipt.id)
